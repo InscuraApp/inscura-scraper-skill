@@ -1,0 +1,261 @@
+{
+  "id": "tvmaze-example",
+  "name": "TVmaze Example",
+  "version": "1.0.0",
+  "description": "TVmaze public API example for Inscura. TV and people metadata; no API key. Data: TVmaze (CC BY-SA 4.0). Images are optional and disabled by default.",
+  "author": "Inscura",
+  "homepage": "https://www.tvmaze.com/api",
+  "apiVersion": 1,
+  "entry": "index.js",
+  "capabilities": [
+    "tv",
+    "actor"
+  ],
+  "providers": {
+    "tv": [
+      {
+        "id": "tvmaze",
+        "label": {
+          "en": "TVmaze"
+        }
+      }
+    ],
+    "actor": [
+      {
+        "id": "tvmaze",
+        "label": {
+          "en": "TVmaze"
+        }
+      }
+    ]
+  },
+  "config": [
+    {
+      "key": "includeImages",
+      "type": "boolean",
+      "label": {
+        "en": "Include remote images"
+      },
+      "default": false,
+      "required": false,
+      "help": {
+        "en": "Data: <a href=\"https://www.tvmaze.com/\">TVmaze</a>, licensed under <a href=\"https://creativecommons.org/licenses/by-sa/4.0/\">CC BY-SA 4.0</a>. Images are off by default. Review <a href=\"https://www.tvmaze.com/site/copyright\">image rights</a> before enabling; Inscura may download returned images. See ATTRIBUTION.md in the source package for mapping changes."
+      }
+    }
+  ],
+  "scrapeFields": {
+    "tv": [
+      {
+        "id": "title",
+        "key": "title",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "text",
+        "label": {
+          "en": "Title"
+        },
+        "translatable": true
+      },
+      {
+        "id": "description",
+        "key": "description",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "long_text",
+        "label": {
+          "en": "Description"
+        },
+        "translatable": true
+      },
+      {
+        "id": "year",
+        "key": "year",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "text",
+        "label": {
+          "en": "Premiere year"
+        },
+        "translatable": false
+      },
+      {
+        "id": "firstAired",
+        "key": "firstAired",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "text",
+        "label": {
+          "en": "First aired"
+        },
+        "translatable": false
+      },
+      {
+        "id": "lastAired",
+        "key": "lastAired",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "text",
+        "label": {
+          "en": "Last aired"
+        },
+        "translatable": false
+      },
+      {
+        "id": "averageRuntime",
+        "key": "averageRuntime",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "text",
+        "label": {
+          "en": "Average runtime (minutes)"
+        },
+        "translatable": false
+      },
+      {
+        "id": "rating",
+        "key": "rating",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "text",
+        "label": {
+          "en": "Rating"
+        },
+        "translatable": false
+      },
+      {
+        "id": "externalIds",
+        "key": "externalIds",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "text",
+        "label": {
+          "en": "External IDs"
+        },
+        "translatable": false
+      },
+      {
+        "id": "tvGenre",
+        "key": "tvGenre",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "multi_select",
+        "label": {
+          "en": "Genres"
+        },
+        "translatable": true
+      },
+      {
+        "id": "network",
+        "key": "network",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "multi_select",
+        "label": {
+          "en": "Networks / web channels"
+        },
+        "translatable": true
+      },
+      {
+        "id": "tvStatus",
+        "key": "tvStatus",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "single_select",
+        "label": {
+          "en": "Status"
+        },
+        "translatable": true
+      },
+      {
+        "id": "cast",
+        "key": "cast",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "long_text",
+        "label": {
+          "en": "Cast"
+        },
+        "translatable": false
+      },
+      {
+        "id": "poster",
+        "key": "poster",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "text",
+        "label": {
+          "en": "Poster (optional)"
+        },
+        "translatable": false
+      },
+      {
+        "id": "seasons",
+        "key": "seasons",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "long_text",
+        "label": {
+          "en": "Season metadata"
+        },
+        "translatable": true
+      },
+      {
+        "id": "episodes",
+        "key": "episodes",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "long_text",
+        "label": {
+          "en": "Official episodes and catalogs"
+        },
+        "translatable": true
+      }
+    ],
+    "actor": [
+      {
+        "id": "name",
+        "key": "name",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "text",
+        "label": {
+          "en": "Name"
+        },
+        "translatable": true
+      },
+      {
+        "id": "birthday",
+        "key": "birthday",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "text",
+        "label": {
+          "en": "Birthday"
+        },
+        "translatable": false
+      },
+      {
+        "id": "gender",
+        "key": "gender",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "single_select",
+        "label": {
+          "en": "Gender"
+        },
+        "translatable": true
+      },
+      {
+        "id": "avatar",
+        "key": "avatar",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "text",
+        "label": {
+          "en": "Avatar (optional)"
+        },
+        "translatable": false
+      }
+    ]
+  }
+}

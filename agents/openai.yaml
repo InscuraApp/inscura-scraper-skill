@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inscura Scraper Plugin Builder"
+  short_description: "Build installable Inscura metadata plugins from API docs"
+  default_prompt: "Use $inscura-scraper-plugin to turn my API documentation or requirements into an installable Inscura plugin ZIP, with configuration and verification notes."
