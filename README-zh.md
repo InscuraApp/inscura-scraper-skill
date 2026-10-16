@@ -4,19 +4,39 @@
 
 向 AI 提供 API 文档或描述需求，生成可以安装到 Inscura 的刮削插件。支持影片、演员、电视剧；附带无需 API Key 的 TVmaze 电视剧与演员示例。
 
-## 使用
+## 一段提示词生成插件
 
-将本目录作为 `inscura-scraper-plugin` Skill 安装到支持 Agent Skills 的工具中，确保 `SKILL.md`、`references/`、`assets/` 和 `scripts/` 保持在同一目录。例如，本地 Codex 可将目录放在 `~/.codex/skills/inscura-scraper-plugin/`。
+将下面的提示词复制给能够读取 GitHub 仓库、运行代码并生成下载文件的 AI。AI 会自行获取 Skill 和所需文件，你无需提前下载包、安装 Skill 或执行命令。
 
-然后告诉 AI：
+### 直接体验 TVmaze
 
-> 使用 $inscura-scraper-plugin，根据 https://www.tvmaze.com/api 创建一个支持电视剧和演员的插件，交付 ZIP 安装包。
+复制这段提示词即可开始：
 
-也可以提供其他服务的 API 文档、OpenAPI 文件、脱敏响应样例，或描述需要哪些元数据。密钥留在 Inscura 的插件设置中填写。
+```text
+请使用 https://github.com/InscuraApp/inscura-scraper-skill 为 TVmaze（https://www.tvmaze.com/api）创建一个可直接安装的 Inscura 插件，支持电视剧和演员。
 
-拿到**插件 ZIP**后，在 Inscura 的“设置 → 插件管理”中安装，然后按需配置并启用。**Skill ZIP 用于安装到 AI 工具，插件 ZIP 用于安装到 Inscura，两者用途不同。**
+请自行读取仓库中的 SKILL.md，获取所需的参考文档、模板和脚本，完成插件生成、校验和 ZIP 打包。不要让我下载或安装 Skill，也不要让我执行命令。完成后直接提供插件 ZIP、可编辑源码和简短的安装说明，并如实说明完成了哪些验证。
+```
 
-## 直接打包 TVmaze 示例
+### 接入其他数据源
+
+将最后一行替换成 API 文档地址、服务的源码仓库、响应样例或需求描述：
+
+```text
+请使用 https://github.com/InscuraApp/inscura-scraper-skill 为下面的数据源创建 Inscura 刮削插件。
+
+请自行读取 SKILL.md 并获取所需仓库文件，分析数据源文档，实现需要的能力，校验结果后直接交付可安装的插件 ZIP 和可编辑源码。不要让我下载或安装 Skill，也不要让我执行命令。仅在缺少必要信息时提问，密钥留到 Inscura 中由我填写。
+
+我的数据源和需求：[API 文档或服务仓库地址、响应样例，或者需要哪些元数据的描述]
+```
+
+拿到 AI 生成的**插件 ZIP**后，在 Inscura 的“设置 → 插件管理”中安装，按需配置并启用即可。密钥在 Inscura 中填写；生成插件不需要先给 AI 安装 Skill。
+
+## 维护者工具
+
+以下命令供贡献者和维护者使用。上面的提示词流程由 AI 自行运行相应工具。
+
+### 打包 TVmaze 示例
 
 工具使用 Python 3.9+ 标准库；`--node-check` 还需要 Node.js 18+。不需要安装 npm 依赖。Windows 可以用 `python` 或 `py -3` 替换 `python3`。
 
@@ -29,13 +49,13 @@ python3 scripts/plugin_tool.py package assets/tvmaze /path/to/output/tvmaze-exam
 
 另附 `scripts/check_result.py` 检查插件返回 JSON 的字段名、类型与空值，避免未知属性被宿主静默忽略。参见[验证指南](references/verification.md)。
 
-## 官网分发
+### 生成分发包
 
 ```sh
 python3 scripts/build_release.py --output-dir dist --node-check
 ```
 
-生成 Skill ZIP、TVmaze 插件 ZIP 和 SHA-256 校验清单，可用于官网的两个独立下载入口。脚本只生成本地文件，不提交代码、不创建 Release、不上传文件。发布前按需要完成真实应用验证。
+生成可选的 Skill 归档包、TVmaze 插件 ZIP 和 SHA-256 校验清单。提示词生成流程不要求用户下载 Skill 归档包；若额外提供下载入口，应明确区分 Skill 归档包与插件安装包。脚本只生成本地文件，不提交代码、不创建 Release、不上传文件。发布前按需要完成真实应用验证。
 
 ## 兼容性与许可
 

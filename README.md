@@ -4,19 +4,39 @@
 
 Create installable Inscura metadata plugins from API documentation or a description of your needs. Supports movie, person, and TV metadata, with a TVmaze example that requires no API key.
 
-## Use the skill
+## Generate a plugin with one prompt
 
-Install this directory as `inscura-scraper-plugin` in an Agent Skills-compatible assistant. Keep `SKILL.md`, `references/`, `assets/`, and `scripts/` together. For a local Codex installation, use `~/.codex/skills/inscura-scraper-plugin/`.
+Copy a prompt below into an AI assistant that can read GitHub repositories, run code, and create downloadable files. The assistant retrieves the skill and its supporting files itself. You do not need to download a skill package, install the skill, or run terminal commands.
 
-Then ask:
+### Try TVmaze
 
-> Use $inscura-scraper-plugin to create an Inscura plugin for https://www.tvmaze.com/api with TV and person support. Deliver an installable ZIP.
+Copy this prompt as-is:
 
-You can instead supply another API's documentation, an OpenAPI file, sanitized response samples, or a description of the metadata you need. Enter any required credentials in Inscura's plugin settings.
+```text
+Use https://github.com/InscuraApp/inscura-scraper-skill to create an installable Inscura plugin for TVmaze (https://www.tvmaze.com/api), supporting TV shows and people.
 
-Install the generated **plugin ZIP** in Inscura's plugin management settings, configure it, and enable it. The **skill ZIP** is for your AI assistant; it is a different download and cannot be installed as an Inscura plugin.
+Read SKILL.md from the repository and retrieve the referenced guides, templates, and scripts you need. Handle retrieval, plugin generation, validation, and ZIP packaging yourself; do not ask me to download or install the skill or run commands. Complete the work and give me the plugin ZIP, editable source, and brief installation instructions, with an accurate summary of the checks performed.
+```
 
-## Package the TVmaze example
+### Use another data source
+
+Replace the last line with an API documentation URL, a service's source repository, response samples, or a description of what you need:
+
+```text
+Use https://github.com/InscuraApp/inscura-scraper-skill to create an Inscura scraper plugin for the source described below.
+
+Read SKILL.md and retrieve the required repository files yourself. Inspect the source documentation, implement the requested capabilities, validate the results, and deliver an installable plugin ZIP plus editable source. Do not ask me to download or install the skill or run commands. Ask only for essential missing information, and leave credentials for me to enter in Inscura.
+
+My data source and requirements: [API documentation or service repository URL, response samples, or a description of the metadata I need]
+```
+
+Once the assistant provides the **plugin ZIP**, install it through Inscura's plugin management settings, configure it if necessary, and enable it. Credentials stay in Inscura's plugin settings. Generating a plugin does not require installing the skill into the assistant first.
+
+## Maintainer tools
+
+The following commands are for contributors and maintainers. The AI runs the corresponding helpers during the prompt-driven workflow above.
+
+### Package the TVmaze example
 
 The helpers use the Python 3.9+ standard library. `--node-check` additionally requires Node.js 18+. No npm dependencies are needed. On Windows, use `python` or `py -3` instead of `python3` if appropriate.
 
@@ -29,13 +49,13 @@ Choose an existing output directory and a new ZIP filename. Packaging checks do 
 
 `scripts/check_result.py` also checks raw plugin results for field-name mistakes, type/null errors, and invalid nested values before the host can silently discard unknown properties. See the [verification guide](references/verification.md).
 
-## Build website downloads
+### Build distribution archives
 
 ```sh
 python3 scripts/build_release.py --output-dir dist --node-check
 ```
 
-This produces the skill ZIP, TVmaze plugin ZIP, and `SHA256SUMS`. Use separate download links for the skill and the plugin. The script creates local files only; it does not commit, push, create a release, or upload anything. Existing outputs are never overwritten.
+This produces an optional skill archive, the TVmaze plugin ZIP, and `SHA256SUMS`. The prompt-driven workflow does not require users to download the skill archive. If offering archives separately, label the skill archive and plugin installer clearly. The script creates local files only; it does not commit, push, create a release, or upload anything. Existing outputs are never overwritten.
 
 The skill works with the released Inscura application. Application verification uses ordinary plugin installation, configuration, test, and search/detail controls. If the assistant cannot operate the application, the user can perform these checks and report the result.
 
