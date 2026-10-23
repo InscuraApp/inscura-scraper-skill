@@ -1,6 +1,8 @@
 # Inscura Scraper Plugin Contract (apiVersion 1)
 
-This reference is self-contained and does not require the Inscura source code. It describes the host implementation as of 2026-10-16. Supported capabilities are `media`, `actor`, and `tv`. Do not generate `game`, `searchGames`, or other unsupported capabilities. See [result-types.md](result-types.md) for return types.
+This reference is self-contained and does not require the Inscura source code. It describes the host implementation as of 2026-10-16. Supported capabilities are `media` (movies and other standalone media), `actor`, and `tv`. Do not generate `game`, `searchGames`, or other unsupported capabilities. See [result-types.md](result-types.md) for return types and [config-patterns.md](config-patterns.md) for settings.
+
+`node tools/inscura.mjs validate` enforces the manifest, package and export rules below; `run --check` enforces the result rules. Rules about semantics (units, scope, error handling) still need review.
 
 ## Package and Manifest
 
@@ -59,7 +61,7 @@ module.exports = {
 
 All methods may be asynchronous. Return `[]` for a successful search with no matches. Throw an `Error` for failures rather than reporting a failed search as a successful empty result. Detail methods must not return `null`, `undefined`, or arrays. Although the host allows `test(ctx)` to be omitted, generated plugins should implement a lightweight, real connectivity check. Return `{ ok: true }` on success; throw an error or return `{ ok: false, error: "Brief diagnostic" }` on failure.
 
-The runtime is QuickJS. Write ES2020 code with CommonJS-style `module.exports = { ... }`; `module.exports.default` is also accepted. This is an export wrapper, not a full Node.js environment. There is no `require` module loader, Node.js built-in modules, filesystem, database access, subprocess API, DOM, or browser storage. Do not depend on `URL`, `URLSearchParams`, `Buffer`, `FormData`, `AbortController`, `setTimeout`, or browser SDKs. Encode query values with `encodeURIComponent`. If developing from TypeScript or npm source, bundle it into a single CommonJS file with no external dependencies or runtime `require` calls.
+The runtime is QuickJS. Write ES2020 code with CommonJS-style `module.exports = { ... }`; `module.exports.default` is also accepted. This is an export wrapper, not a full Node.js environment. There is no `require` module loader, Node.js built-in modules, filesystem, database access, subprocess API, DOM, or browser storage. Do not depend on `URL`, `URLSearchParams`, `Buffer`, `FormData`, `AbortController`, `setTimeout`, `console`, `Intl` (including locale-aware `toLocaleString` formatting), or browser SDKs; `inscura run` removes them from its sandbox so such code fails before delivery. Encode query values with `encodeURIComponent`. If developing from TypeScript or npm source, bundle it into a single CommonJS file with no external dependencies or runtime `require` calls.
 
 `ctx`:
 

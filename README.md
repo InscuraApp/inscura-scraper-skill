@@ -1,68 +1,66 @@
 # Inscura Scraper Skill
 
-[English](README.md) | [Simplified Chinese](README-zh.md)
+[English](README.md) | [简体中文](README-zh.md)
 
-Create installable Inscura metadata plugins from API documentation or a description of your needs. Supports movie, person, and TV metadata, with a TVmaze example that requires no API key.
+Have your own AI agent build a scraper plugin that installs straight into Inscura, for movies, TV shows or people, with its settings already set up.
 
-## Generate a plugin with one prompt
+## One prompt, one plugin
 
-Copy a prompt below into an AI assistant that can read GitHub repositories, run code, and create downloadable files. The assistant retrieves the skill and its supporting files itself. You do not need to download a skill package, install the skill, or run terminal commands.
-
-### Try TVmaze
-
-Copy this prompt as-is:
+Copy this into your AI agent, then write the service you want after the last colon:
 
 ```text
-Use https://github.com/InscuraApp/inscura-scraper-skill to create an installable Inscura plugin for TVmaze (https://www.tvmaze.com/api), supporting TV shows and people.
-
-Read SKILL.md from the repository and retrieve the referenced guides, templates, and scripts you need. Handle retrieval, plugin generation, validation, and ZIP packaging yourself; do not ask me to download or install the skill or run commands. Complete the work and give me the plugin ZIP, editable source, and brief installation instructions, with an accurate summary of the checks performed.
+Read SKILL.md from https://github.com/InscuraApp/inscura-scraper-skill and follow its workflow exactly to build me an installable Inscura scraper plugin. Fetch the toolkit, generate the plugin and its settings, validate and package it yourself; do not ask me to run commands. Only ask if essential information is missing, and leave API keys for me to enter in Inscura.
+The service I want:
 ```
 
-### Use another data source
+Examples for the last line:
 
-Replace the last line with an API documentation URL, a service's source repository, response samples, or a description of what you need:
+- `TMDB movies and people`
+- `TVmaze TV shows`
+- `My self-hosted Jellyfin at http://192.168.1.10:8096, movies`
+- `https://api.example.com/openapi.json (API docs or sample responses work too)`
 
-```text
-Use https://github.com/InscuraApp/inscura-scraper-skill to create an Inscura scraper plugin for the source described below.
+Any agent that can browse the web and run commands works, such as Claude Code, Cursor, Codex or Gemini CLI. Your machine needs Node.js 18 or newer. You do not need to install this skill first.
 
-Read SKILL.md and retrieve the required repository files yourself. Inspect the source documentation, implement the requested capabilities, validate the results, and deliver an installable plugin ZIP plus editable source. Do not ask me to download or install the skill or run commands. Ask only for essential missing information, and leave credentials for me to enter in Inscura.
+## After you get the plugin
 
-My data source and requirements: [API documentation or service repository URL, response samples, or a description of the metadata I need]
-```
+The agent delivers a plugin ZIP, its editable source, and a table explaining each setting.
 
-Once the assistant provides the **plugin ZIP**, install it through Inscura's plugin management settings, configure it if necessary, and enable it. Credentials stay in Inscura's plugin settings. Generating a plugin does not require installing the skill into the assistant first.
+1. Open Inscura → Settings → Plugins → Install from ZIP.
+2. Fill in the settings from the table, such as an API key, a server URL, or whether to include images.
+3. Enable the plugin. Enabling runs a connection test.
+4. Choose the plugin as a scraper for a library or in search.
 
-## Maintainer tools
+## What it supports
 
-The following commands are for contributors and maintainers. The AI runs the corresponding helpers during the prompt-driven workflow above.
+| Type | Capability | Scope |
+| --- | --- | --- |
+| Movies and standalone media | `media` | Search and details |
+| TV shows | `tv` | Search and details, including seasons, episodes and complete episode catalogs |
+| People and actors | `actor` | Search and details |
 
-### Package the TVmaze example
+Plugins return metadata and image URLs only. They never read, change or download your media files, and never bypass logins, paywalls or access restrictions.
 
-The helpers use the Python 3.9+ standard library. `--node-check` additionally requires Node.js 18+. No npm dependencies are needed. On Windows, use `python` or `py -3` instead of `python3` if appropriate.
+## For maintainers
+
+Repository layout:
+
+- `SKILL.md`: the agent's single entry point, a staged workflow
+- `tools/inscura.mjs`: zero-dependency Node CLI with `new`, `validate`, `run`, `check`, `pack` and `fields`
+- `templates/plugin/`: scaffold templates
+- `docs/`: plugin contract, result types, settings patterns and verification guide
+- `examples/tvmaze/`: reference implementation
+- `test/`: regression tests
 
 ```sh
-python3 scripts/plugin_tool.py validate assets/tvmaze --node-check
-python3 scripts/plugin_tool.py package assets/tvmaze /path/to/output/tvmaze-example-v1.0.0.zip --node-check
+npm test
+node tools/inscura.mjs help
+node tools/inscura.mjs run examples/tvmaze searchTv "Breaking Bad" --live --check
+node tools/inscura.mjs pack examples/tvmaze /tmp/tvmaze-example-v1.0.0.zip
 ```
-
-Choose an existing output directory and a new ZIP filename. Packaging checks do not replace real API or application verification.
-
-`scripts/check_result.py` also checks raw plugin results for field-name mistakes, type/null errors, and invalid nested values before the host can silently discard unknown properties. See the [verification guide](references/verification.md).
-
-### Build distribution archives
-
-```sh
-python3 scripts/build_release.py --output-dir dist --node-check
-```
-
-This produces an optional skill archive, the TVmaze plugin ZIP, and `SHA256SUMS`. The prompt-driven workflow does not require users to download the skill archive. If offering archives separately, label the skill archive and plugin installer clearly. The script creates local files only; it does not commit, push, create a release, or upload anything. Existing outputs are never overwritten.
-
-The skill works with the released Inscura application. Application verification uses ordinary plugin installation, configuration, test, and search/detail controls. If the assistant cannot operate the application, the user can perform these checks and report the result.
 
 ## Compatibility and licensing
 
-Targets Inscura plugin `apiVersion: 1`. The bundled contract was checked against the host implementation on 2026-10-16 and supports `media`, `actor`, and `tv`.
+Targets Inscura plugin `apiVersion: 1`. The contract reference reflects the host implementation as of 2026-10-16.
 
-The skill, helpers, and newly written example code use the [MIT license](LICENSE). TVmaze data has separate CC BY-SA terms, and image rights need separate consideration; see the [attribution notice](assets/tvmaze/ATTRIBUTION.md). Image output is disabled by default in the example and can be enabled in its settings.
-
-Private validation outputs and locally generated integrations belong in `local-validation/`, which is excluded from Git and from release archives. The public example remains TVmaze.
+The skill, tools and example code use the [MIT license](LICENSE). TVmaze data is licensed CC BY-SA, and image rights are separate; see the [attribution notice](examples/tvmaze/ATTRIBUTION.md). Generated plugins must follow their own data sources' terms.

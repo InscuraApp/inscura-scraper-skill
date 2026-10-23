@@ -1,0 +1,76 @@
+{
+  "requests": [
+    { "url": "https://api.tvmaze.com/shows/1", "json": { "id": 1, "name": "Synthetic Show One" } },
+    {
+      "url": "https://api.tvmaze.com/search/shows?q=Demo%20Show",
+      "json": [
+        {
+          "score": 0.91,
+          "show": {
+            "id": 101,
+            "name": "Demo Show",
+            "premiered": "2001-02-03",
+            "status": "Ended",
+            "network": { "name": "Demo Network" },
+            "webChannel": null,
+            "summary": "<p>A <b>synthetic</b> show &amp; nothing more.</p>",
+            "image": { "medium": "https://static.example.invalid/m.jpg", "original": "https://static.example.invalid/o.jpg" },
+            "externals": { "imdb": "tt0000101", "thetvdb": 5101 }
+          }
+        },
+        { "score": 0.5, "show": { "id": 102, "name": "Demo Show (Remake)", "premiered": null, "image": null, "externals": {} } }
+      ]
+    },
+    { "url": "https://api.tvmaze.com/search/shows?q=Nothing%20Matches", "json": [] },
+    {
+      "url": "https://api.tvmaze.com/shows/101?embed=cast",
+      "json": {
+        "id": 101,
+        "name": "Demo Show",
+        "premiered": "2001-02-03",
+        "ended": "2003-04-05",
+        "status": "Ended",
+        "averageRuntime": 42,
+        "genres": ["Drama", "Mystery"],
+        "rating": { "average": 8.1 },
+        "network": { "name": "Demo Network" },
+        "webChannel": { "name": "Demo Stream" },
+        "summary": "<p>A synthetic show.</p>",
+        "image": null,
+        "externals": { "imdb": "tt0000101", "thetvdb": 5101 },
+        "_embedded": {
+          "cast": [
+            { "person": { "id": 201, "name": "Demo Actor" }, "character": { "name": "Demo Role" } },
+            { "person": { "id": 202, "name": "Second Actor" }, "character": null }
+          ]
+        }
+      }
+    },
+    {
+      "url": "https://api.tvmaze.com/shows/101/seasons",
+      "json": [
+        { "id": 300, "number": 0, "name": "Specials" },
+        { "id": 301, "number": 1, "premiereDate": "2001-02-03", "summary": "<p>First.</p>" },
+        { "id": 302, "number": 2, "premiereDate": "2002-02-03" }
+      ]
+    },
+    {
+      "url": "https://api.tvmaze.com/shows/101/episodes?specials=1",
+      "json": [
+        { "id": 400, "season": 0, "number": 0, "name": "Pilot Special", "airdate": "2000-12-24" },
+        { "id": 401, "season": 0, "number": null, "name": "Unnumbered Special" },
+        { "id": 411, "season": 1, "number": 1, "name": "One", "airdate": "2001-02-03", "runtime": 42, "rating": { "average": 7.9 } },
+        { "id": 412, "season": 1, "number": 2, "name": "Two", "airdate": "2001-02-10", "runtime": 0, "rating": { "average": null } },
+        { "id": 413, "season": 1, "number": 3, "name": "Three", "airdate": "2001-02-17" },
+        { "id": 421, "season": 2, "number": 1, "name": "Four", "airdate": "2002-02-03" },
+        { "id": 422, "season": 2, "number": 2, "name": "Five", "airdate": "2002-02-10" }
+      ]
+    },
+    { "url": "https://api.tvmaze.com/shows/999?embed=cast", "status": 404, "json": { "name": "Not Found", "status": 404 } },
+    { "url": "https://api.tvmaze.com/shows/998?embed=cast", "status": 200, "text": "<html>maintenance</html>" },
+    { "url": "https://api.tvmaze.com/shows/997?embed=cast", "status": 429, "text": "Too Many Requests" },
+    { "url": "https://api.tvmaze.com/shows/996?embed=cast", "networkError": true },
+    { "url": "https://api.tvmaze.com/search/people?q=Demo%20Actor", "json": [{ "score": 0.9, "person": { "id": 201, "name": "Demo Actor", "image": null } }] },
+    { "url": "https://api.tvmaze.com/people/201", "json": { "id": 201, "name": "Demo Actor", "birthday": "1970-01-02", "gender": "Female", "country": { "name": "Nowhere" } } }
+  ]
+}

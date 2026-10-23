@@ -1,6 +1,17 @@
 # TVmaze Example
 
-Use this example for a first plugin, or when a user wants TV and actor metadata without specifying a source. Copy the code from `../assets/tvmaze/` into the user's output directory before modifying it. The example requires no API key, intermediary service, or SDK.
+`examples/tvmaze/` is the reference implementation for TV and actor plugins: read it before implementing `getTvDetail`, especially the scope and catalog logic. If a user asks for TVmaze itself, copy the directory to the user's output directory and change it there; never edit the example in the skill checkout. It requires no API key, intermediary service, or SDK.
+
+Try it without writing anything:
+
+```sh
+node tools/inscura.mjs validate examples/tvmaze
+node tools/inscura.mjs run examples/tvmaze searchTv "Breaking Bad" --live --check
+node tools/inscura.mjs run examples/tvmaze getTvDetail 101 --fixtures test/fixtures/tvmaze.json --check \
+  --scope '{"seasons":[{"seasonNumber":1,"episodeNumbers":[1]},{"seasonNumber":2,"episodeNumbers":[]}]}'
+```
+
+`test/fixtures/tvmaze.json` contains small synthetic responses (invented titles, no TVmaze data) shaped like the real API.
 
 ## Endpoints and Mapping
 
@@ -27,4 +38,4 @@ The [API license](https://www.tvmaze.com/api#licensing) is CC BY-SA. Preserve so
 
 Image URLs are disabled by default. Users may enable them in plugin settings after checking their intended use. This is a choice made by the example, not a universal requirement for every generated plugin. The API permits linking to and caching images, but that does not establish that every poster or person photo may be used for any commercial or promotional purpose. See the [TVmaze copyright policy](https://www.tvmaze.com/site/copyright) and [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Use original or appropriately licensed images for website demonstrations.
 
-The example contains newly written adapter code and documentation, with no API data snapshots, posters, or person photos. Use this skill's [plugin contract](plugin-contract.md) and [result types](result-types.md) for the exact result shapes and field declarations.
+The example contains newly written adapter code and documentation, with no API data snapshots, posters, or person photos. Use this skill's [plugin contract](contract.md) and [result types](result-types.md) for the exact result shapes and field declarations.

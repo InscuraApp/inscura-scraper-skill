@@ -2,65 +2,65 @@
 
 [English](README.md) | [简体中文](README-zh.md)
 
-向 AI 提供 API 文档或描述需求，生成可以安装到 Inscura 的刮削插件。支持影片、演员、电视剧；附带无需 API Key 的 TVmaze 电视剧与演员示例。
+让你自己的 AI Agent 生成一个能直接安装到 Inscura 的刮削插件，支持电影、电视剧和演员，配置项也会一起生成好。
 
-## 一段提示词生成插件
+## 一段话生成插件
 
-将下面的提示词复制给能够读取 GitHub 仓库、运行代码并生成下载文件的 AI。AI 会自行获取 Skill 和所需文件，你无需提前下载包、安装 Skill 或执行命令。
-
-### 直接体验 TVmaze
-
-复制这段提示词即可开始：
+复制下面这段话发给你的 AI Agent，然后在最后一行冒号后面写上你要接入的服务：
 
 ```text
-请使用 https://github.com/InscuraApp/inscura-scraper-skill 为 TVmaze（https://www.tvmaze.com/api）创建一个可直接安装的 Inscura 插件，支持电视剧和演员。
-
-请自行读取仓库中的 SKILL.md，获取所需的参考文档、模板和脚本，完成插件生成、校验和 ZIP 打包。不要让我下载或安装 Skill，也不要让我执行命令。完成后直接提供插件 ZIP、可编辑源码和简短的安装说明，并如实说明完成了哪些验证。
+请读取 https://github.com/InscuraApp/inscura-scraper-skill 中的 SKILL.md，并严格按照其中的流程为我生成一个可安装的 Inscura 刮削插件。自行完成工具获取、插件生成、配置项、校验和打包，不要让我执行命令；只在确实缺少关键信息时提问，密钥留到 Inscura 中由我自己填写。
+我要接入的服务：
 ```
 
-### 接入其他数据源
+最后一行可以这样写：
 
-将最后一行替换成 API 文档地址、服务的源码仓库、响应样例或需求描述：
+- `TMDB 的电影和演员`
+- `TVmaze 的电视剧`
+- `我自己部署的 Jellyfin，地址 http://192.168.1.10:8096，刮削电影`
+- `https://api.example.com/openapi.json（附上接口文档或响应样例都可以）`
 
-```text
-请使用 https://github.com/InscuraApp/inscura-scraper-skill 为下面的数据源创建 Inscura 刮削插件。
+Claude Code、Cursor、Codex、Gemini CLI 等能联网、能执行命令的 Agent 都可以用，电脑上需要有 Node.js 18 或更高版本。不需要提前安装这个 Skill。
 
-请自行读取 SKILL.md 并获取所需仓库文件，分析数据源文档，实现需要的能力，校验结果后直接交付可安装的插件 ZIP 和可编辑源码。不要让我下载或安装 Skill，也不要让我执行命令。仅在缺少必要信息时提问，密钥留到 Inscura 中由我填写。
+## 拿到插件之后
 
-我的数据源和需求：[API 文档或服务仓库地址、响应样例，或者需要哪些元数据的描述]
-```
+Agent 会交付插件 ZIP、可编辑的源码，以及一张配置项说明表。
 
-拿到 AI 生成的**插件 ZIP**后，在 Inscura 的“设置 → 插件管理”中安装，按需配置并启用即可。密钥在 Inscura 中填写；生成插件不需要先给 AI 安装 Skill。
+1. 打开 Inscura → 设置 → 插件管理 → 从 ZIP 安装。
+2. 按说明表填写配置项，例如 API 密钥、服务地址、是否返回图片。
+3. 启用插件。启用时会自动做一次连接测试。
+4. 在媒体库或搜索中选用这个插件。
 
-## 维护者工具
+## 支持范围
 
-以下命令供贡献者和维护者使用。上面的提示词流程由 AI 自行运行相应工具。
+| 类型 | 插件能力 | 说明 |
+| --- | --- | --- |
+| 电影 / 单部影片 | `media` | 搜索 + 详情 |
+| 电视剧 | `tv` | 搜索 + 详情，含季、集和完整剧集目录 |
+| 演员 / 人物 | `actor` | 搜索 + 详情 |
 
-### 打包 TVmaze 示例
+插件只返回元数据和图片地址，不会读取、修改或下载你的媒体文件，也不会绕过登录、付费墙或访问限制。
 
-工具使用 Python 3.9+ 标准库；`--node-check` 还需要 Node.js 18+。不需要安装 npm 依赖。Windows 可以用 `python` 或 `py -3` 替换 `python3`。
+## 维护者
+
+仓库结构：
+
+- `SKILL.md`：Agent 的唯一入口，规定了分阶段的工作流程
+- `tools/inscura.mjs`：零依赖的 Node CLI，提供 `new`、`validate`、`run`、`check`、`pack`、`fields` 命令
+- `templates/plugin/`：脚手架模板
+- `docs/`：插件协议、返回值类型、配置项模式、验证指南
+- `examples/tvmaze/`：参考实现
+- `test/`：回归测试
 
 ```sh
-python3 scripts/plugin_tool.py validate assets/tvmaze --node-check
-python3 scripts/plugin_tool.py package assets/tvmaze /path/to/output/tvmaze-example-v1.0.0.zip --node-check
+npm test
+node tools/inscura.mjs help
+node tools/inscura.mjs run examples/tvmaze searchTv "Breaking Bad" --live --check
+node tools/inscura.mjs pack examples/tvmaze /tmp/tvmaze-example-v1.0.0.zip
 ```
-
-将输出路径替换为已有目录中的新 ZIP 路径，输出文件不能已存在。校验器检查包结构与静态契约，不能代替真实 QuickJS 执行、上游 API 和 Inscura 应用内验证。
-
-另附 `scripts/check_result.py` 检查插件返回 JSON 的字段名、类型与空值，避免未知属性被宿主静默忽略。参见[验证指南](references/verification.md)。
-
-### 生成分发包
-
-```sh
-python3 scripts/build_release.py --output-dir dist --node-check
-```
-
-生成可选的 Skill 归档包、TVmaze 插件 ZIP 和 SHA-256 校验清单。提示词生成流程不要求用户下载 Skill 归档包；若额外提供下载入口，应明确区分 Skill 归档包与插件安装包。脚本只生成本地文件，不提交代码、不创建 Release、不上传文件。发布前按需要完成真实应用验证。
 
 ## 兼容性与许可
 
-面向当前 Inscura 插件 `apiVersion: 1`。接口参考按 2026-10-16 源码整理，只有 `media`、`actor`、`tv`；不会为尚未实现的能力生成可安装承诺。
+面向 Inscura 插件 `apiVersion: 1`，接口参考按 2026-10-16 的宿主实现整理。
 
-Skill、脚本和新写的示例代码采用 [MIT](LICENSE)。TVmaze 数据使用其自身的 CC BY-SA 许可，图片还需核对具体使用权；见[示例署名说明](assets/tvmaze/ATTRIBUTION.md)。图片返回默认关闭，插件设置可以开启。
-
-正式版使用普通插件安装、配置、测试和搜索界面进行验证。AI 无法操作应用时，由用户执行这些步骤并反馈结果；无需启用任何开发功能。
+Skill、工具和示例代码采用 [MIT](LICENSE) 许可。TVmaze 的数据使用 CC BY-SA 许可，图片版权需要另行确认，详见[示例署名说明](examples/tvmaze/ATTRIBUTION.md)。生成的插件需要遵守各自数据源的条款。

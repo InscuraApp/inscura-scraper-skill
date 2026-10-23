@@ -1,6 +1,6 @@
 # Plugin Results: Exact Fields and Null Rules
 
-Use this reference together with [plugin-contract.md](plugin-contract.md). All results are JSON-serializable plain objects with camelCase properties. The fields below describe the JavaScript results consumed by the host, not application editing forms.
+Use this reference together with [contract.md](contract.md). All results are JSON-serializable plain objects with camelCase properties. The fields below describe the JavaScript results consumed by the host, not application editing forms.
 
 ## General Rules
 
@@ -116,7 +116,7 @@ interface Artwork {
 - Search `network` is one string; detail `network` is a string array. Search `overview`, `posterUrl`, and `status` correspond to detail `description`, `poster`, and `tvStatus`.
 - Show and episode `externalIds.provider` values are limited to lowercase `imdb`, `tvdb`, `tmdb`, and `wikidata`. Seasons accept only `tvdb`, `tmdb`, and `wikidata`. Use at most one ID per provider; unsupported providers are filtered out. Store a TVmaze ID in the top-level `id`, not in `externalIds`, and never relabel it as a TVDB ID. Preserve the IMDb `tt` prefix.
 - Season and episode `artworks` require the corresponding season/episode numbers. At these scopes, only `poster`, `backdrop`, `banner`, and `photo` are supported. `logo` and `clearart` are show-level only. The host normalizes `clearlogo` to `logo` and `still` to `photo`; generate the standard types directly.
-- Every `episodeCatalogs` entry must contain `seasonNumber` and `episodes`, and every episode entry must contain `episodeNumber`. Include only successfully obtained complete season snapshots. See [TV scope and episode catalogs](plugin-contract.md#tv-scope-and-episode-catalogs).
+- Every `episodeCatalogs` entry must contain `seasonNumber` and `episodes`, and every episode entry must contain `episodeNumber`. Include only successfully obtained complete season snapshots. See [TV scope and episode catalogs](contract.md#tv-scope-and-episode-catalogs).
 
 ## Media
 

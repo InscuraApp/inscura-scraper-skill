@@ -34,7 +34,8 @@
       "key": "includeImages",
       "type": "boolean",
       "label": {
-        "en": "Include remote images"
+        "en": "Include remote images",
+        "zh-CN": "返回远程图片"
       },
       "default": false,
       "required": false,
