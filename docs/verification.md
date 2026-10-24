@@ -80,6 +80,8 @@ Images are the most important assets. Exercise the installed default profile by 
 
 A JSON URL is only mapping evidence. For representative returned URLs, separately check the actual HTTP response and decodable image bytes; redirects, HTML error bodies, authentication and access failures matter. Never embed credentials in image URLs, and do not assume the host image downloader reuses the metadata API authorization headers. If the source offers a documented image proxy, verify it before recommending it. Preserve unsuccessful URL checks rather than masking them by disabling images.
 
+Save representative images from each capability outside the plugin directory and actually decode them, for example with Pillow `Image.open(path).load()`, ImageMagick conversion, or macOS `sips -s format png input --out decoded.png`. Record the decoder command and outcome alongside URL, HTTP status and content type. A successful HTTP response or format/size inspection is not decoding evidence; if no decoder ran successfully, write **decoding: not run/failed**, never "decodable bytes" or an overall image pass.
+
 When image application is authorized, use the generated ZIP in an isolated test library and record actual host download, persisted file existence/nonzero size/image decoding, metadata-to-image linkage, and visible display. Report mapping, URL retrieval, host download, persistence and UI display separately; passing an earlier stage does not prove a later one. Retain failed source categories and unavailable app access as explicit limitations.
 
 ### Reuse source behavior suites
@@ -117,6 +119,8 @@ node "$SKILL_DIR/tools/smoke.mjs" "$PLUGIN_DIR" actor "Demo Actor" --fixtures "$
 node "$SKILL_DIR/tools/smoke.mjs" "$PLUGIN_DIR" media "match" --provider MetaTube --config @"$TEST_CONFIG" --fixtures "$FIXTURES"
 node "$SKILL_DIR/tools/smoke.mjs" "$PLUGIN_DIR" actor "$KNOWN_PERSON_QUERY" --live --config @"$LIVE_CONFIG" > "$REPORT_DIR/actor-live.json"
 ```
+
+Its JSON is a chain summary: `methods` contains method names, not their response bodies. To inspect returned artwork, run `inscura run <plugin> <detail-method> <candidate.id> --provider <candidate.provider> --live --check` with the same connection settings, and save that result outside the plugin. Use those returned image URLs for the retrieval/decoding checks above.
 
 Choose the calls and queries that match the source. For live runs, use a known title/person from the actual provider's public documentation or catalog; unrelated queries returning no matches test emptiness only. The tool validates the plugin, runs `test`, searches, selects the first returned candidate and requests its exact provider/ID before checking detail identity and shape. A separate hardcoded detail ID cannot establish a chain. Empty search, method failure, unmatched fixtures and identity mismatch exit nonzero with a failed stage. Keep the JSON report and exit status; they contain plugin/candidate identity and methods, not source metadata, configuration or plugin logs. Use ordinary `inscura run` to diagnose failed stages, and preserve unresolved failures in the delivery record.
 

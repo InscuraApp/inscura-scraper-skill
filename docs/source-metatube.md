@@ -60,6 +60,8 @@ Use the following as a menu of supported behavior, not an obligation to expose e
 
 Verify all source-provided image categories with only the connection configured: media search thumbnails, detail small/large posters and covers, preview photos, actor search avatars and actor detail portraits/photos. Do not enable images just in the test config: the manifest defaults used by Inscura must already enable them. Compare direct and proxy responses when needed; a valid URL alone does not prove the host can download or persist it.
 
+Retrieve and decode representative media and actor images from the generated plugin's live results using the [image evidence checks](verification.md#images-mapping-retrieval-and-application). Record HTTP and actual decoding outcomes separately; an `image/*` response alone must not become a "decodable" claim in the README.
+
 Resolve dependencies: explicit image-off overrides preview images. In the reference, custom-fields-off omits source provenance only; enabled reviews and actor extension custom fields remain independent. Disabled reviews or a zero review limit must not trigger a discarded optional request. Explicitly requested enrichment failures must not be disguised as an empty result. Do not add `/v1/translate`, host-language, retry or cache settings.
 
 ## Mapping checks
