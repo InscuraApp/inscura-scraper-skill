@@ -40,28 +40,47 @@ export function configPresets({ auth, selfHosted, baseUrl, keyUrl, images, timeo
             type: "text",
             required: true,
             default: baseUrl ?? "",
-            label: { en: "Server URL", "zh-CN": "服务地址" },
-            placeholder: { en: "http://localhost:8080", "zh-CN": "http://localhost:8080" },
+            label: { en: "Server URL", "zh-CN": "服务地址", "zh-TW": "伺服器網址", ja: "サーバー URL", ko: "서버 URL" },
+            placeholder: Object.fromEntries(["en", "zh-CN", "zh-TW", "ja", "ko"].map((locale) => [locale, "http://localhost:8080"])),
             help: {
                 en: "Address of your own server, including http:// or https:// and any path prefix. Local addresses are allowed.",
                 "zh-CN": "你自己部署的服务地址，需包含 http:// 或 https://，以及路径前缀（如有）。可以填写局域网或本机地址。",
+                "zh-TW": "自行部署的伺服器網址，需包含 http:// 或 https://，以及路徑前綴（如有）。可使用區域網路或本機位址。",
+                ja: "自分で運用するサーバーの URL。http:// または https:// と、必要なパスの接頭辞を含めてください。ローカルアドレスも使用できます。",
+                ko: "직접 운영하는 서버 주소입니다. http:// 또는 https://와 필요한 경로 접두사를 포함하세요. 로컬 주소도 사용할 수 있습니다.",
             },
         });
     }
     if (auth.type !== "none") {
         const where = auth.type === "query" ? "query parameter " + auth.name : auth.type === "header" ? "header " + auth.name : "Authorization: Bearer header";
+        const authLocation = {
+            "zh-TW": auth.type === "query" ? "查詢參數 " + auth.name : auth.type === "header" ? "標頭 " + auth.name : "Authorization: Bearer 標頭",
+            ja: auth.type === "query" ? "クエリパラメーター " + auth.name : auth.type === "header" ? "ヘッダー " + auth.name : "Authorization: Bearer ヘッダー",
+            ko: auth.type === "query" ? "쿼리 매개변수 " + auth.name : auth.type === "header" ? "헤더 " + auth.name : "Authorization: Bearer 헤더",
+        };
         const token = auth.type === "bearer";
         config.push({
             key: "apiKey",
             type: "password",
             required: true,
             default: "",
-            label: token ? { en: "Access token", "zh-CN": "访问令牌" } : { en: "API key", "zh-CN": "API 密钥" },
-            placeholder: { en: "Paste your " + (token ? "token" : "API key"), "zh-CN": "粘贴你的" + (token ? "访问令牌" : " API 密钥") },
+            label: token
+                ? { en: "Access token", "zh-CN": "访问令牌", "zh-TW": "存取權杖", ja: "アクセストークン", ko: "액세스 토큰" }
+                : { en: "API key", "zh-CN": "API 密钥", "zh-TW": "API 金鑰", ja: "API キー", ko: "API 키" },
+            placeholder: {
+                en: "Paste your " + (token ? "token" : "API key"),
+                "zh-CN": "粘贴你的" + (token ? "访问令牌" : " API 密钥"),
+                "zh-TW": "貼上你的" + (token ? "存取權杖" : " API 金鑰"),
+                ja: (token ? "トークン" : "API キー") + "を貼り付け",
+                ko: (token ? "토큰" : "API 키") + " 붙여넣기",
+            },
             help: {
                 en: "Get one from " + link(keyUrl, keyUrl ? "the provider's account page" : "your account on the data source") +
                     ". Sent as the " + where + ". Kept in Inscura's plugin settings only.",
                 "zh-CN": "在" + link(keyUrl, "数据源的账号页面") + "申请。请求时作为 " + where + " 发送，仅保存在 Inscura 的插件设置中。",
+                "zh-TW": "在" + link(keyUrl, "資料來源的帳戶頁面") + "申請。請求時以" + authLocation["zh-TW"] + "傳送，僅儲存在 Inscura 的外掛程式設定中。",
+                ja: link(keyUrl, "データ提供元のアカウントページ") + "で取得してください。" + authLocation.ja + "として送信され、Inscura のプラグイン設定にのみ保存されます。",
+                ko: link(keyUrl, "데이터 제공업체의 계정 페이지") + "에서 발급받으세요. " + authLocation.ko + "로 전송되며 Inscura 플러그인 설정에만 저장됩니다.",
             },
         });
     }
@@ -71,10 +90,13 @@ export function configPresets({ auth, selfHosted, baseUrl, keyUrl, images, timeo
             type: "boolean",
             required: false,
             default: images === "on",
-            label: { en: "Include remote images", "zh-CN": "返回远程图片" },
+            label: { en: "Include remote images", "zh-CN": "返回远程图片", "zh-TW": "傳回遠端圖片", ja: "リモート画像を含める", ko: "원격 이미지 포함" },
             help: {
-                en: "Return poster, backdrop and photo URLs. Inscura may download them when applying metadata; check the source's image terms.",
-                "zh-CN": "返回海报、背景图和照片地址，应用元数据时 Inscura 可能下载这些图片。请先确认数据源的图片使用条款。",
+                en: "Return available poster, backdrop and photo URLs. Images are core assets; the recommended default is enabled. Source image terms still apply.",
+                "zh-CN": "返回可用的海报、背景图和照片地址。图片是核心资产，推荐默认开启。仍须遵守来源图片使用条款。",
+                "zh-TW": "傳回可用的海報、背景圖和照片網址。圖片是核心資產，建議預設開啟。仍須遵守來源圖片使用條款。",
+                ja: "利用可能なポスター、背景画像、写真の URL を返します。画像は重要な資産のため既定での有効化を推奨します。提供元の画像利用条件が適用されます。",
+                ko: "사용 가능한 포스터, 배경 및 사진 URL을 반환합니다. 이미지는 핵심 자산이므로 기본 활성화를 권장합니다. 출처의 이미지 이용 약관이 적용됩니다.",
             },
         });
     }
@@ -86,8 +108,11 @@ export function configPresets({ auth, selfHosted, baseUrl, keyUrl, images, timeo
             default: 30,
             min: 5,
             max: 180,
-            label: { en: "Request timeout (seconds)", "zh-CN": "请求超时（秒）" },
-            help: { en: "Increase for slow self-hosted servers.", "zh-CN": "自建服务较慢时可调大。" },
+            label: { en: "Request timeout (seconds)", "zh-CN": "请求超时（秒）", "zh-TW": "請求逾時（秒）", ja: "リクエストのタイムアウト（秒）", ko: "요청 제한 시간(초)" },
+            help: {
+                en: "Increase for slow self-hosted servers.", "zh-CN": "自建服务较慢时可调大。",
+                "zh-TW": "自架伺服器較慢時可調高。", ja: "自分で運用するサーバーが遅い場合は値を大きくしてください。", ko: "직접 운영하는 서버가 느리면 값을 늘리세요.",
+            },
         });
     }
     return config;
@@ -157,7 +182,10 @@ export function scaffold(dir, options) {
         apiVersion: 1,
         entry: "index.js",
         capabilities,
-        providers: Object.fromEntries(capabilities.map((capability) => [capability, [{ id: providerId, label: { en: providerLabel } }]])),
+        providers: Object.fromEntries(capabilities.map((capability) => [capability, [{
+            id: providerId,
+            label: Object.fromEntries(["en", "zh-CN", "zh-TW", "ja", "ko"].map((locale) => [locale, providerLabel])),
+        }]])),
         config: configPresets({ auth, selfHosted, baseUrl, keyUrl: options.keyUrl, images: options.images, timeout: options.timeout }),
         scrapeFields: scrapeFields(parseFieldSpecs(options.fields, capabilities), providerId),
     };

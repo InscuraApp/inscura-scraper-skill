@@ -22,7 +22,7 @@ Usage: node tools/inscura.mjs <command> [options]
       --auth <mode>           none | header:<Name> | query:<param> | bearer   (default none)
       --key-url <url>         Where users obtain the API key (shown in settings help)
       --self-hosted           Add a "Server URL" setting (users run their own server)
-      --images <on|off>       Add an "Include remote images" toggle with this default
+      --images <on|off>       Add image toggle: use on; off only for explicit user preference
       --timeout               Add a "Request timeout (seconds)" setting
       --fields <cap=a,b>      Standard scrape fields to declare (repeatable), e.g. tv=title,description
       --homepage <url> --description <text> --author <text> --version <semver>
@@ -185,7 +185,10 @@ async function cmdRun(args, values) {
         try {
             if (operation === "test") checkTestResult(value);
             else {
-                checkResult(capability, operation, value, outcome.provider);
+                const allowedSearchProviders = operation === "search"
+                    ? validated.manifest.providers[capability].map((item) => item.id)
+                    : undefined;
+                checkResult(capability, operation, value, outcome.provider, allowedSearchProviders);
                 if (method === "getTvDetail" && tvScope != null) checkTvScope(value, tvScope);
                 if (operation === "detail" && value.id !== input) problems.push("detail id " + JSON.stringify(value.id) + " differs from requested " + JSON.stringify(input));
                 if (operation === "search" && value.length === 0) err("NOTE: empty result; also run a query that is known to match");

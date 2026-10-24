@@ -4,6 +4,7 @@
 
 var API = "https://api.tvmaze.com";
 var PROVIDER = "tvmaze";
+var PLUGIN_ID = "tvmaze-example";
 
 function fail(message) {
     throw new Error("TVmaze: " + message);
@@ -54,7 +55,7 @@ async function getJson(ctx, path) {
         response = await ctx.fetch(API + path, {
             headers: {
                 "Accept": "application/json",
-                "User-Agent": "Inscura-TVmaze-Example/1.0.0"
+                "User-Agent": "Inscura-TVmaze-Example/1.3.0"
             }
         });
     } catch (error) {
@@ -93,6 +94,14 @@ function rating(value) {
         ? average : undefined;
 }
 
+// TVmaze search weights are relative relevance, not calibrated probabilities.
+// Positive scores can exceed 1. This strictly increasing transform preserves
+// source score ordering in Inscura's 0..1 matchScore range without clamping.
+function relevanceScore(value) {
+    return typeof value === "number" && Number.isFinite(value) && value >= 0
+        ? value / (1 + value) : undefined;
+}
+
 function duration(value) {
     return integer(value, 1) ? value : undefined;
 }
@@ -117,8 +126,22 @@ function plainText(value) {
         .replace(/\n\s*\n/g, "\n\n"));
 }
 
+function setting(ctx, key, fallback) {
+    var value = ctx.config && ctx.config[key];
+    if (value === undefined) return fallback;
+    if (typeof value !== "boolean") fail("invalid " + key + " setting (expected boolean)");
+    return value;
+}
+
+function validateSettings(ctx) {
+    setting(ctx, "includeImages", true);
+    setting(ctx, "includeCast", true);
+    setting(ctx, "includeCrew", false);
+    setting(ctx, "includeAliases", false);
+}
+
 function imageUrl(value, ctx) {
-    if (!ctx.config || ctx.config.includeImages !== true || !isObject(value)) return undefined;
+    if (!setting(ctx, "includeImages", true) || !isObject(value)) return undefined;
     var url = text(value.original) || text(value.medium);
     return url && /^https:\/\/[^\s]+$/i.test(url) ? url : undefined;
 }
@@ -156,11 +179,41 @@ function castCredits(value) {
         var role = isObject(item.character) ? text(item.character.name) : undefined;
         return {
             name: person.name.trim(),
+            scraperPluginId: PLUGIN_ID,
+            providerId: PROVIDER,
             providerActorId: remoteId(person.id),
             roles: [{ slug: "actor", name: "Actor", character: role || "" }],
             sortOrder: index
         };
     });
+}
+
+function crewCredits(value) {
+    return requireArray(value, "crew").map(function (item, index) {
+        if (!isObject(item) || !text(item.type)) fail("invalid crew entry");
+        var person = resource(item.person, "crew person");
+        var job = item.type.trim();
+        var slug = job.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+        if (!slug) fail("invalid crew type");
+        return {
+            name: person.name.trim(),
+            scraperPluginId: PLUGIN_ID,
+            providerId: PROVIDER,
+            providerActorId: remoteId(person.id),
+            roles: [{ slug: slug, name: job, job: job }],
+            sortOrder: index
+        };
+    });
+}
+
+function aliases(value) {
+    var result = [];
+    requireArray(value, "aliases").forEach(function (item) {
+        if (!isObject(item) || !text(item.name)) fail("invalid alias entry");
+        var name = item.name.trim();
+        if (result.indexOf(name) === -1) result.push(name);
+    });
+    return result;
 }
 
 function scopeFrom(ctx) {
@@ -209,18 +262,20 @@ function mapEpisode(episode, ctx) {
 
 module.exports = {
     test: async function (ctx) {
+        validateSettings(ctx);
         // A documented public resource verifies both reachability and response shape.
         sameResource(await getJson(ctx, "/shows/1"), "1", "show");
         return { ok: true };
     },
 
     searchTv: async function (keyword, ctx) {
+        validateSettings(ctx);
         requireProvider(ctx.request && ctx.request.provider);
         var query = text(keyword);
         if (!query) return [];
         var data = requireArray(await getJson(ctx, "/search/shows?q=" + encodeURIComponent(query)), "show search");
         // TVmaze has no search year/language parameter. Preserve all same-name candidates.
-        // Its relevance score is not a calibrated 0..1 confidence; omit matchScore.
+        // Preserve its relative relevance ordering; matchScore is not a probability.
         return data.map(function (entry) {
             if (!isObject(entry)) fail("invalid show search entry");
             var show = resource(entry.show, "show search entry");
@@ -228,6 +283,7 @@ module.exports = {
                 id: remoteId(show.id),
                 provider: PROVIDER,
                 title: show.name.trim(),
+                matchScore: relevanceScore(entry.score),
                 year: year(show.premiered),
                 firstAired: date(show.premiered),
                 status: text(show.status),
@@ -240,11 +296,13 @@ module.exports = {
     },
 
     getTvDetail: async function (provider, id, ctx) {
+        validateSettings(ctx);
         requireProvider(provider);
         id = remoteId(id);
         var scope = scopeFrom(ctx);
-        var show = sameResource(await getJson(ctx, "/shows/" + id + "?embed=cast"), id, "show");
-        if (!isObject(show._embedded)) fail("missing embedded cast");
+        var includeCast = setting(ctx, "includeCast", true);
+        var show = sameResource(await getJson(ctx, "/shows/" + id + (includeCast ? "?embed=cast" : "")), id, "show");
+        if (includeCast && !isObject(show._embedded)) fail("missing embedded cast");
         var result = {
             id: id,
             provider: PROVIDER,
@@ -262,16 +320,18 @@ module.exports = {
             }),
             network: networks(show),
             tvStatus: text(show.status),
-            cast: castCredits(show._embedded.cast),
+            cast: includeCast ? castCredits(show._embedded.cast) : undefined,
             poster: imageUrl(show.image, ctx),
             sourceUrl: sourceUrl("shows", id),
             seasons: [],
             episodes: [],
             episodeCatalogs: []
         };
+        if (setting(ctx, "includeCrew", false)) result.crew = crewCredits(await getJson(ctx, "/shows/" + id + "/crew"));
+        if (setting(ctx, "includeAliases", false)) result.aliases = aliases(await getJson(ctx, "/shows/" + id + "/akas"));
         if (scope !== null && scope.length === 0) return result;
 
-        // Three sequential requests total; never fan out one HTTP request per episode.
+        // At most five sequential requests total; never fan out one request per episode.
         var seasons = requireArray(await getJson(ctx, "/shows/" + id + "/seasons"), "seasons");
         var episodes = requireArray(await getJson(ctx, "/shows/" + id + "/episodes?specials=1"), "episodes");
         var knownSeasons = {};
@@ -319,6 +379,7 @@ module.exports = {
     },
 
     searchActors: async function (name, ctx) {
+        validateSettings(ctx);
         requireProvider(ctx.request && ctx.request.provider);
         var query = text(name);
         if (!query) return [];
@@ -330,12 +391,14 @@ module.exports = {
                 id: remoteId(person.id),
                 provider: PROVIDER,
                 name: person.name.trim(),
+                matchScore: relevanceScore(entry.score),
                 avatar: imageUrl(person.image, ctx)
             };
         });
     },
 
     getActorDetail: async function (provider, id, ctx) {
+        validateSettings(ctx);
         requireProvider(provider);
         id = remoteId(id);
         var person = sameResource(await getJson(ctx, "/people/" + id), id, "person");

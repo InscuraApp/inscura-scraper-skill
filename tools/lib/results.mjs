@@ -217,13 +217,19 @@ const SPECS = {
         episodes: array(episode), episodeCatalogs: nullable(array(catalog)), artworks: array(artwork), customFields },
 };
 
-export function checkResult(capability, operation, data, provider) {
+// Search can return concrete providers from an aggregator. The caller may supply
+// that capability's manifest allowlist; standalone checks keep exact matching.
+export function checkResult(capability, operation, data, provider, allowedSearchProviders) {
     const spec = SPECS[capability + "." + operation];
     if (!spec) throw new InvalidResult("unknown capability/operation: " + capability + " " + operation);
     const required = ["id", "provider", ...(capability === "actor" ? ["name"] : operation === "search" ? ["title"] : [])];
     const item = (value, path) => {
         objectCheck(value, path, spec, required);
-        if (provider != null) require(value.provider === provider, path + ".provider", "does not match expected provider " + provider);
+        if (operation === "search" && allowedSearchProviders != null) {
+            require(allowedSearchProviders.includes(value.provider), path + ".provider", "provider is not declared for " + capability + ": " + value.provider);
+        } else if (provider != null) {
+            require(value.provider === provider, path + ".provider", "does not match expected provider " + provider);
+        }
     };
     (operation === "search" ? array(item) : item)(data, "$");
 }

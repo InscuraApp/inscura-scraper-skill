@@ -1,21 +1,25 @@
 # TVmaze Attribution and Usage
 
-This independent Inscura example plugin uses the TVmaze public API. It does not imply that TVmaze endorses Inscura or this plugin. No API key is required. It supports TV show search, show and season details, episodes in official airing order, and people search and basic profiles. TVmaze's people database also includes crew members, so users should confirm the intended person.
+This independent Inscura plugin uses the [TVmaze public API](https://www.tvmaze.com/api). No API key is required. It is not endorsed by TVmaze.
 
-Data comes from [TVmaze](https://www.tvmaze.com/). See the [TVmaze API documentation](https://www.tvmaze.com/api) for endpoints and licensing. TVmaze API data is licensed under [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/). Retain attribution to TVmaze and the license link when reusing the data. When distributing adapted data, comply with the applicable ShareAlike terms and identify your changes. This plugin maps fields, converts HTML summaries to plain text, normalizes dates, and filters results to the requested scope.
+## Data
 
-Every show or person detail includes a TVmaze `sourceUrl` so the host can display a source link. Keep this file and provide visible TVmaze attribution in the application or website that distributes the data. Attribution inside the package does not replace attribution required in the application.
+Metadata is provided by [TVmaze](https://www.tvmaze.com/) under [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/). Retain attribution and the license link when distributing data, identify adaptations and comply with ShareAlike where applicable. The adapter maps fields, normalizes dates, removes summary markup, derives bounded relative relevance, deduplicates aliases and filters season/episode details to local scope. It does not generate source facts or translations.
 
-No images are distributed with the example package. The **Include remote images** setting is disabled by default. When enabled, the plugin returns image URLs supplied by the TVmaze API, and Inscura may download those images when applying metadata. This does not transfer image copyright or establish permission for every use. Before enabling images, review the [TVmaze copyright policy](https://www.tvmaze.com/site/copyright) and the rights applicable to each image. Do not treat the API data license as blanket permission to use images in website marketing.
+Each show/person detail returns a TVmaze `sourceUrl`. Keep visible attribution in the application or website that distributes the data; this file does not replace that requirement. Plugin source code uses the included MIT license, which does not replace the upstream data license.
 
-Implementation limits:
+## Images
 
-- Uses TVmaze's official airing order. It requests specials as well, retains explicit season and episode numbers including zero, and omits episodes with a null episode number. It does not invent S00 or sequential numbers for unnumbered specials. Catalogs contain only episodes with an official season/episode pair.
-- `ctx.request.tvScope` limits returned season and episode details. A requested local season with no episodes can still receive its complete episode catalog. Catalogs do not create local media files.
-- TVmaze does not provide a localization or year-filter parameter for the search endpoints used here. The plugin preserves all returned candidates instead of silently removing same-name shows by year.
-- TVmaze search scores are not calibrated match probabilities. This example omits `matchScore` instead of inventing percentages; the host may display its default score.
-- The person endpoint does not provide a reliably mapped biography or nationality, so the example omits those fields.
-- HTTP 404, HTTP 429, invalid JSON, and malformed responses produce errors. After HTTP 429, wait before retrying. The host sandbox has no JavaScript timers, so this example does not retry immediately in a loop.
-- The plugin only requests `https://api.tvmaze.com`. It does not require tokens, cookies, or passwords, and has no configuration for bypassing access restrictions.
+No posters or portraits are distributed in the package. Images are enabled by default as core metadata assets. The plugin returns source primary image URLs, which Inscura may download when applying metadata. Review the [TVmaze copyright policy](https://www.tvmaze.com/site/copyright) and rights for the intended use. API access, hotlinking and caching permission do not establish blanket commercial or marketing rights to every image. This adapter does not fetch the full show image gallery.
 
-To install, place `manifest.json`, `index.js`, and this file at the ZIP root. Install the ZIP through plugin management in Inscura Settings, then enable **TVmaze Example**. API and license information was checked on 2026-10-16.
+## Source limits
+
+- Official airing order is preserved. Explicit season/episode numbers, including zero, remain intact. Specials with null official episode numbers are omitted; numbering is never invented.
+- A complete requested-season catalog can include episodes not locally owned. It does not create media records. An empty local season permits a catalog but not season/episode detail or artwork.
+- TVmaze supplies no localization or year-filter parameter for these searches. Source aliases may help translated-name searches, but this does not guarantee every translated title will match.
+- Search weights are relative relevance, not probabilities. Finite nonnegative weights use `s / (1 + s)`; unknown or invalid weights are omitted.
+- People metadata does not provide a reliably mapped biography or nationality. Source country is not repurposed as nationality.
+- Optional cast, crew and aliases settings control actual requests/output. Credits reference this plugin's actor capability; keep the manifest ID and `PLUGIN_ID` constant synchronized when copying.
+- HTTP failures, invalid JSON and malformed data throw short diagnostics. HTTP 429 requests a later retry; there is no immediate retry loop.
+
+API and copyright references were reviewed on 2026-10-23. See [README.md](README.md) for host translation limits and the generated output's verification status.

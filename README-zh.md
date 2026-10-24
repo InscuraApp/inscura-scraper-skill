@@ -9,7 +9,7 @@
 复制下面这段话发给你的 AI Agent，然后在最后一行冒号后面写上你要接入的服务：
 
 ```text
-请读取 https://github.com/InscuraApp/inscura-scraper-skill 中的 SKILL.md，并严格按照其中的流程为我生成一个可安装的 Inscura 刮削插件。自行完成工具获取、插件生成、配置项、校验和打包，不要让我执行命令；只在确实缺少关键信息时提问，密钥留到 Inscura 中由我自己填写。
+请读取 https://github.com/InscuraApp/inscura-scraper-skill 中的 SKILL.md，并按照其中的流程为我生成一个可安装的 Inscura 刮削插件。自行完成工具获取、插件生成、实用配置项、校验和打包，不要让我执行命令；可以一次简洁地询问我选择推荐配置或高级选项。若我已经说明偏好或要求直接生成，就按该偏好或推荐默认值执行，不再重复提问。密钥留到 Inscura 中由我自己填写。
 我要接入的服务：
 ```
 
@@ -20,11 +20,11 @@
 - `我自己部署的 Jellyfin，地址 http://192.168.1.10:8096，刮削电影`
 - `https://api.example.com/openapi.json（附上接口文档或响应样例都可以）`
 
-Claude Code、Cursor、Codex、Gemini CLI 等能联网、能执行命令的 Agent 都可以用，电脑上需要有 Node.js 18 或更高版本。不需要提前安装这个 Skill。
+Claude Code、Cursor、Codex、Gemini CLI 等能联网、能执行命令的 Agent 都可以用，电脑上需要有 Node.js 18.13 或更高版本。工具没有第三方依赖，不需要提前安装这个 Skill 或运行 npm install。
 
 ## 拿到插件之后
 
-Agent 会交付插件 ZIP、可编辑的源码，以及一张配置项说明表。
+Agent 会交付插件 ZIP、可编辑的源码，以及一张配置项说明表。配置和字段标签覆盖英文、简体中文、繁体中文、日文和韩文。根据数据源能力，可提供聚合数据源筛选、详情完整度、图片与预览数量、可选扩展元数据等实用配置，每项都必须有实际行为。图片是最重要的资产：图片及预览、图库等开关默认开启，只有你明确要求时才关闭。必须保留来源可用图片；返回 URL 并不等于应用已经成功下载、保存或显示。
 
 1. 打开 Inscura → 设置 → 插件管理 → 从 ZIP 安装。
 2. 按说明表填写配置项，例如 API 密钥、服务地址、是否返回图片。
@@ -41,23 +41,7 @@ Agent 会交付插件 ZIP、可编辑的源码，以及一张配置项说明表�
 
 插件只返回元数据和图片地址，不会读取、修改或下载你的媒体文件，也不会绕过登录、付费墙或访问限制。
 
-## 维护者
-
-仓库结构：
-
-- `SKILL.md`：Agent 的唯一入口，规定了分阶段的工作流程
-- `tools/inscura.mjs`：零依赖的 Node CLI，提供 `new`、`validate`、`run`、`check`、`pack`、`fields` 命令
-- `templates/plugin/`：脚手架模板
-- `docs/`：插件协议、返回值类型、配置项模式、验证指南
-- `examples/tvmaze/`：参考实现
-- `test/`：回归测试
-
-```sh
-npm test
-node tools/inscura.mjs help
-node tools/inscura.mjs run examples/tvmaze searchTv "Breaking Bad" --live --check
-node tools/inscura.mjs pack examples/tvmaze /tmp/tvmaze-example-v1.0.0.zip
-```
+交付说明会区分静态校验、fixture 测试、真实 API 请求和 Inscura 内执行。合成响应通过不代表服务器或数据源实际可用。MetaTube 的配置和验证要点见[专项指南](docs/source-metatube.md)。
 
 ## 兼容性与许可
 

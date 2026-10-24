@@ -1,4 +1,0 @@
-interface:
-  display_name: "Inscura Scraper Plugin Builder"
-  short_description: "Build installable Inscura scraper plugins (movies, TV, people) with ready-made settings"
-  default_prompt: "Use $inscura-scraper-plugin to build an installable Inscura scraper plugin for the service I describe, with its settings, validation and ZIP. The service I want:"

@@ -1,8 +1,8 @@
 {
   "id": "tvmaze-example",
   "name": "TVmaze Example",
-  "version": "1.0.0",
-  "description": "TVmaze public API example for Inscura. TV and people metadata; no API key. Data: TVmaze (CC BY-SA 4.0). Images are optional and disabled by default.",
+  "version": "1.3.0",
+  "description": "TVmaze public API for Inscura: TV shows, seasons, episodes and people; optional cast, crew, aliases and image URLs. No API key. Data: CC BY-SA 4.0.",
   "author": "Inscura",
   "homepage": "https://www.tvmaze.com/api",
   "apiVersion": 1,
@@ -16,7 +16,11 @@
       {
         "id": "tvmaze",
         "label": {
-          "en": "TVmaze"
+          "en": "TVmaze",
+          "zh-CN": "TVmaze",
+          "zh-TW": "TVmaze",
+          "ja": "TVmaze",
+          "ko": "TVmaze"
         }
       }
     ],
@@ -24,7 +28,11 @@
       {
         "id": "tvmaze",
         "label": {
-          "en": "TVmaze"
+          "en": "TVmaze",
+          "zh-CN": "TVmaze",
+          "zh-TW": "TVmaze",
+          "ja": "TVmaze",
+          "ko": "TVmaze"
         }
       }
     ]
@@ -35,12 +43,79 @@
       "type": "boolean",
       "label": {
         "en": "Include remote images",
-        "zh-CN": "返回远程图片"
+        "zh-CN": "返回远程图片",
+        "zh-TW": "傳回遠端圖片",
+        "ja": "リモート画像を取得",
+        "ko": "원격 이미지 포함"
       },
-      "default": false,
+      "default": true,
       "required": false,
       "help": {
-        "en": "Data: <a href=\"https://www.tvmaze.com/\">TVmaze</a>, licensed under <a href=\"https://creativecommons.org/licenses/by-sa/4.0/\">CC BY-SA 4.0</a>. Images are off by default. Review <a href=\"https://www.tvmaze.com/site/copyright\">image rights</a> before enabling; Inscura may download returned images. See ATTRIBUTION.md in the source package for mapping changes."
+        "en": "Enabled by default to preserve image assets. Return image URLs; Inscura downloads supported images when applying metadata. Source image terms still apply. See <a href=\"https://www.tvmaze.com/site/copyright\">image rights</a>.",
+        "zh-CN": "默认开启，保留重要图片资产。返回图片 URL；应用元数据时 Inscura 下载受支持的图片。仍须遵守来源图片使用条款。 参见<a href=\"https://www.tvmaze.com/site/copyright\">图片版权</a>。",
+        "zh-TW": "預設開啟，保留重要圖片資產。回傳圖片 URL；套用中繼資料時 Inscura 下載支援的圖片。仍須遵守來源圖片使用條款。 請參閱<a href=\"https://www.tvmaze.com/site/copyright\">圖片版權</a>。",
+        "ja": "画像資産を保持するため既定で有効です。画像 URL を返し、メタデータ適用時に Inscura が対応画像を取得します。提供元の画像利用条件が適用されます。 <a href=\"https://www.tvmaze.com/site/copyright\">画像の権利</a>を参照してください。",
+        "ko": "중요한 이미지 자산을 보존하도록 기본으로 켜집니다. 이미지 URL을 반환하며 메타데이터 적용 시 Inscura가 지원 이미지를 다운로드합니다. 출처의 이미지 이용 약관이 적용됩니다. <a href=\"https://www.tvmaze.com/site/copyright\">이미지 권리</a>를 확인하세요."
+      }
+    },
+    {
+      "key": "includeCast",
+      "type": "boolean",
+      "default": true,
+      "required": false,
+      "label": {
+        "en": "Include main cast",
+        "zh-CN": "返回主要演员",
+        "zh-TW": "傳回主要演員",
+        "ja": "主要キャストを取得",
+        "ko": "주요 출연진 포함"
+      },
+      "help": {
+        "en": "Include show cast with linked person identities. Disabling omits the field and embedded cast request.",
+        "zh-CN": "返回剧集主要演员及关联人物身份；关闭后省略演员字段及嵌入请求。",
+        "zh-TW": "傳回影集主要演員及關聯人物身分；關閉後省略演員欄位及嵌入請求。",
+        "ja": "人物情報に紐づく主要キャストを取得します。無効時は項目と埋め込み取得を省略します。",
+        "ko": "인물 식별자가 연결된 주요 출연진을 포함합니다. 끄면 해당 필드와 포함 요청을 생략합니다."
+      }
+    },
+    {
+      "key": "includeCrew",
+      "type": "boolean",
+      "default": false,
+      "required": false,
+      "label": {
+        "en": "Include show crew",
+        "zh-CN": "返回剧组",
+        "zh-TW": "傳回劇組",
+        "ja": "制作スタッフを取得",
+        "ko": "제작진 포함"
+      },
+      "help": {
+        "en": "Fetch show-level crew. Adds one request per show detail.",
+        "zh-CN": "获取剧集级剧组信息，每次剧集详情增加一次请求。",
+        "zh-TW": "取得影集層級劇組資訊，每次影集詳情增加一次請求。",
+        "ja": "番組の制作スタッフを取得します。番組詳細ごとにリクエストが1回増えます。",
+        "ko": "프로그램 제작진을 조회합니다. 상세 조회마다 요청이 한 번 추가됩니다."
+      }
+    },
+    {
+      "key": "includeAliases",
+      "type": "boolean",
+      "default": false,
+      "required": false,
+      "label": {
+        "en": "Include alternate show names",
+        "zh-CN": "返回剧集别名",
+        "zh-TW": "傳回影集別名",
+        "ja": "番組の別名を取得",
+        "ko": "프로그램 다른 제목 포함"
+      },
+      "help": {
+        "en": "Fetch alternate show names. Adds one request; names are source data, not automatic translations.",
+        "zh-CN": "获取剧集别名并增加一次请求；别名来自数据源，并非自动翻译。",
+        "zh-TW": "取得影集別名並增加一次請求；別名來自資料來源，並非自動翻譯。",
+        "ja": "別名を取得し、リクエストが1回増えます。別名は提供元のデータで、自動翻訳ではありません。",
+        "ko": "다른 제목을 조회하며 요청이 한 번 추가됩니다. 제공처의 데이터이며 자동 번역이 아닙니다."
       }
     }
   ],
@@ -53,7 +128,11 @@
         "kind": "standard",
         "fieldType": "text",
         "label": {
-          "en": "Title"
+          "en": "Title",
+          "zh-CN": "标题",
+          "zh-TW": "標題",
+          "ja": "タイトル",
+          "ko": "제목"
         },
         "translatable": true
       },
@@ -64,7 +143,11 @@
         "kind": "standard",
         "fieldType": "long_text",
         "label": {
-          "en": "Description"
+          "en": "Description",
+          "zh-CN": "简介",
+          "zh-TW": "簡介",
+          "ja": "あらすじ",
+          "ko": "설명"
         },
         "translatable": true
       },
@@ -75,7 +158,11 @@
         "kind": "standard",
         "fieldType": "text",
         "label": {
-          "en": "Premiere year"
+          "en": "Premiere year",
+          "zh-CN": "首播年份",
+          "zh-TW": "首播年份",
+          "ja": "初回放送年",
+          "ko": "최초 방영 연도"
         },
         "translatable": false
       },
@@ -86,7 +173,11 @@
         "kind": "standard",
         "fieldType": "text",
         "label": {
-          "en": "First aired"
+          "en": "First aired",
+          "zh-CN": "首播日期",
+          "zh-TW": "首播日期",
+          "ja": "初回放送日",
+          "ko": "최초 방영일"
         },
         "translatable": false
       },
@@ -97,7 +188,11 @@
         "kind": "standard",
         "fieldType": "text",
         "label": {
-          "en": "Last aired"
+          "en": "Last aired",
+          "zh-CN": "最后播出日期",
+          "zh-TW": "最後播出日期",
+          "ja": "最終放送日",
+          "ko": "마지막 방영일"
         },
         "translatable": false
       },
@@ -108,7 +203,11 @@
         "kind": "standard",
         "fieldType": "text",
         "label": {
-          "en": "Average runtime (minutes)"
+          "en": "Average runtime (minutes)",
+          "zh-CN": "平均时长（分钟）",
+          "zh-TW": "平均片長（分鐘）",
+          "ja": "平均再生時間（分）",
+          "ko": "평균 재생 시간(분)"
         },
         "translatable": false
       },
@@ -119,7 +218,11 @@
         "kind": "standard",
         "fieldType": "text",
         "label": {
-          "en": "Rating"
+          "en": "Rating",
+          "zh-CN": "评分",
+          "zh-TW": "評分",
+          "ja": "評価",
+          "ko": "평점"
         },
         "translatable": false
       },
@@ -130,7 +233,11 @@
         "kind": "standard",
         "fieldType": "text",
         "label": {
-          "en": "External IDs"
+          "en": "External IDs",
+          "zh-CN": "外部编号",
+          "zh-TW": "外部編號",
+          "ja": "外部 ID",
+          "ko": "외부 ID"
         },
         "translatable": false
       },
@@ -141,7 +248,11 @@
         "kind": "standard",
         "fieldType": "multi_select",
         "label": {
-          "en": "Genres"
+          "en": "Genres",
+          "zh-CN": "类型",
+          "zh-TW": "類型",
+          "ja": "ジャンル",
+          "ko": "장르"
         },
         "translatable": true
       },
@@ -152,7 +263,11 @@
         "kind": "standard",
         "fieldType": "multi_select",
         "label": {
-          "en": "Networks / web channels"
+          "en": "Networks / web channels",
+          "zh-CN": "电视台／网络平台",
+          "zh-TW": "電視台／網路平台",
+          "ja": "放送局・配信サービス",
+          "ko": "방송사 / 스트리밍 서비스"
         },
         "translatable": true
       },
@@ -163,7 +278,11 @@
         "kind": "standard",
         "fieldType": "single_select",
         "label": {
-          "en": "Status"
+          "en": "Status",
+          "zh-CN": "播出状态",
+          "zh-TW": "播出狀態",
+          "ja": "放送状況",
+          "ko": "방영 상태"
         },
         "translatable": true
       },
@@ -174,9 +293,13 @@
         "kind": "standard",
         "fieldType": "long_text",
         "label": {
-          "en": "Cast"
+          "en": "Main cast",
+          "zh-CN": "主要演员",
+          "zh-TW": "主要演員",
+          "ja": "主要キャスト",
+          "ko": "주요 출연진"
         },
-        "translatable": false
+        "translatable": true
       },
       {
         "id": "poster",
@@ -185,7 +308,11 @@
         "kind": "standard",
         "fieldType": "text",
         "label": {
-          "en": "Poster (optional)"
+          "en": "Poster (optional)",
+          "zh-CN": "海报（可选）",
+          "zh-TW": "海報（選用）",
+          "ja": "ポスター（任意）",
+          "ko": "포스터(선택)"
         },
         "translatable": false
       },
@@ -196,7 +323,11 @@
         "kind": "standard",
         "fieldType": "long_text",
         "label": {
-          "en": "Season metadata"
+          "en": "Season metadata",
+          "zh-CN": "季信息",
+          "zh-TW": "季資訊",
+          "ja": "シーズン情報",
+          "ko": "시즌 정보"
         },
         "translatable": true
       },
@@ -207,7 +338,41 @@
         "kind": "standard",
         "fieldType": "long_text",
         "label": {
-          "en": "Official episodes and catalogs"
+          "en": "Official episodes and catalogs",
+          "zh-CN": "官方单集与目录",
+          "zh-TW": "官方單集與目錄",
+          "ja": "公式エピソードと一覧",
+          "ko": "공식 에피소드 및 목록"
+        },
+        "translatable": true
+      },
+      {
+        "id": "crew",
+        "key": "crew",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "long_text",
+        "label": {
+          "en": "Show crew",
+          "zh-CN": "剧组",
+          "zh-TW": "劇組",
+          "ja": "制作スタッフ",
+          "ko": "제작진"
+        },
+        "translatable": true
+      },
+      {
+        "id": "aliases",
+        "key": "aliases",
+        "provider": "tvmaze",
+        "kind": "standard",
+        "fieldType": "multi_select",
+        "label": {
+          "en": "Alternate show names",
+          "zh-CN": "剧集别名",
+          "zh-TW": "影集別名",
+          "ja": "番組の別名",
+          "ko": "다른 제목"
         },
         "translatable": true
       }
@@ -220,7 +385,11 @@
         "kind": "standard",
         "fieldType": "text",
         "label": {
-          "en": "Name"
+          "en": "Name",
+          "zh-CN": "姓名",
+          "zh-TW": "姓名",
+          "ja": "名前",
+          "ko": "이름"
         },
         "translatable": true
       },
@@ -231,7 +400,11 @@
         "kind": "standard",
         "fieldType": "text",
         "label": {
-          "en": "Birthday"
+          "en": "Birthday",
+          "zh-CN": "出生日期",
+          "zh-TW": "出生日期",
+          "ja": "生年月日",
+          "ko": "생년월일"
         },
         "translatable": false
       },
@@ -242,9 +415,13 @@
         "kind": "standard",
         "fieldType": "single_select",
         "label": {
-          "en": "Gender"
+          "en": "Gender",
+          "zh-CN": "性别",
+          "zh-TW": "性別",
+          "ja": "性別",
+          "ko": "성별"
         },
-        "translatable": true
+        "translatable": false
       },
       {
         "id": "avatar",
@@ -253,7 +430,11 @@
         "kind": "standard",
         "fieldType": "text",
         "label": {
-          "en": "Avatar (optional)"
+          "en": "Avatar (optional)",
+          "zh-CN": "头像（可选）",
+          "zh-TW": "頭像（選用）",
+          "ja": "プロフィール画像（任意）",
+          "ko": "프로필 이미지(선택)"
         },
         "translatable": false
       }

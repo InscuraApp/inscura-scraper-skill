@@ -41,7 +41,7 @@ Minimal manifest:
 | `scrapeFields` | Optional object containing field description arrays for the corresponding capabilities. Explicitly list fields the plugin can provide so users can control field selection and translation. |
 | `updateUrl` | Optional string. Omit it unless a real update service has been verified; do not provide a placeholder URL. |
 
-A provider identifies a data source; it is distinct from the plugin ID and an entity ID. The manifest provider, `ctx.request.provider`, detail method argument, search and detail results' `provider`, and field declarations' `provider` must agree. The host checks selected provider IDs case-sensitively. Do not add a separate provider selector through `config`. Entity `id` values must always be strings, even when the upstream API uses numbers. Actor search also returns the original ID: **do not concatenate `provider::id` yourself**.
+A provider identifies a data source; it is distinct from the plugin ID and an entity ID. The host checks provider IDs case-sensitively. A search result must use a provider declared for that capability; an aggregate search may return its declared concrete providers. The detail argument, detail result and field declarations must identify the same concrete provider. Use the host's provider selector; an aggregator can additionally offer filters that apply only to its aggregate selection, as described in [config-patterns.md](config-patterns.md#aggregated-providers). Entity `id` values must always be strings, even when the upstream API uses numbers. Actor search also returns the original ID: **do not concatenate `provider::id` yourself**.
 
 ## Methods and Runtime
 
@@ -103,7 +103,7 @@ interface FetchResponse {
 
 ## Configuration Definitions
 
-Each field requires `key: string`, `type: string`, and `label: Record<string,string>`. Optional properties are `required: boolean` (default false), `default` (a JSON value), `placeholder` and `help` (locale-keyed text), `options` (described below), and numeric `min` and `max`. Provide English labels under `en`. `required` describes the configuration field; it does not replace validation of missing values and types inside the plugin.
+Each field requires `key: string`, `type: string`, and `label: Record<string,string>`. Optional properties are `required: boolean` (default false), `default` (a JSON value), `placeholder` and `help` (locale-keyed text), `options` (described below), and numeric `min` and `max`. The host accepts English labels under `en`; generated plugins should supply `en`, `zh-CN`, `zh-TW`, `ja` and `ko` for all labels and every supplied help/placeholder, including provider, option and scrape-field labels. `required` describes the configuration field; it does not replace validation of missing values and types inside the plugin.
 
 | Type | Value and requirements |
 | --- | --- |
@@ -126,7 +126,7 @@ An `options` element is `{ value: string | number | boolean, label: { "en": "Opt
 }
 ```
 
-Each declaration requires `id`, `key`, `provider`, `kind`, `fieldType`, and `label`. `translatable` defaults to true. Use `standard` or `custom` for `kind`. A standard field must have `id === key` and appear in the allowlist below; otherwise the host filters it out. Standard fields represent user-selectable concepts and do not necessarily share the names of detail JSON properties. Text may be translated; explicitly set `translatable: false` for numbers, dates, URLs, IDs, and images. Media `originalTitle` is always nontranslatable. See [shared nested types](result-types.md#shared-nested-types) for custom field types and values.
+Each declaration requires `id`, `key`, `provider`, `kind`, `fieldType`, and `label`. `translatable` defaults to true; generated declarations should set it explicitly. Use `standard` or `custom` for `kind`. A standard field must have `id === key` and appear in the allowlist below; otherwise the host filters it out. Standard fields represent user-selectable concepts and do not necessarily share the names of detail JSON properties. Natural-language metadata may be translated; explicitly set `translatable: false` for numbers, dates, URLs, IDs, codes and images, including their string forms. Media `originalTitle` is always nontranslatable. Declaring a container translatable does not prove that every nested string is processed by the host; follow [translation checks](verification.md#localization-and-translation). See [shared nested types](result-types.md#shared-nested-types) for custom field types and values.
 
 | Capability | Complete standard field allowlist |
 | --- | --- |

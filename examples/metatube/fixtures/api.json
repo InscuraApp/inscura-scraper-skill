@@ -1,0 +1,1234 @@
+{
+  "synthetic": true,
+  "description": "Neutral invented source metadata; never recorded upstream content or translation results.",
+  "requests": [
+    {
+      "url": "https://metatube.example.invalid/v1/db/version",
+      "json": {
+        "data": {
+          "version": "synthetic-schema-1"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/providers",
+      "json": {
+        "data": {
+          "movie_providers": {
+            "FANZA": "https://example.org/providers/fanza",
+            "JavBus": "https://example.org/providers/javbus"
+          },
+          "actor_providers": {
+            "Gfriends": "https://example.org/providers/gfriends"
+          }
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=match&provider=FANZA&fallback=true",
+      "json": {
+        "data": [
+          {
+            "id": "movie-1",
+            "number": "EXAMPLE-001",
+            "title": "A Bright Morning",
+            "provider": "FANZA",
+            "homepage": "https://example.org/movies/movie-1",
+            "thumb_url": "https://example.org/images/poster-small.png",
+            "cover_url": "https://example.org/images/cover-small.png",
+            "score": 4.5,
+            "actors": [
+              "Alex Example",
+              "Casey Example"
+            ],
+            "release_date": "2024-06-15T00:00:00Z"
+          },
+          {
+            "id": "movie-1",
+            "number": "EXAMPLE-001",
+            "title": "A Bright Morning",
+            "provider": "FANZA",
+            "homepage": "https://example.org/movies/movie-1",
+            "thumb_url": "https://example.org/images/poster-small.png",
+            "cover_url": "https://example.org/images/cover-small.png",
+            "score": 4.5,
+            "actors": [
+              "Alex Example",
+              "Casey Example"
+            ],
+            "release_date": "2024-06-15T00:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=match&fallback=true",
+      "json": {
+        "data": [
+          {
+            "id": "movie-1",
+            "number": "EXAMPLE-001",
+            "title": "A Bright Morning",
+            "provider": "FANZA",
+            "homepage": "https://example.org/movies/movie-1",
+            "thumb_url": "https://example.org/images/poster-small.png",
+            "cover_url": "https://example.org/images/cover-small.png",
+            "score": 4.5,
+            "actors": [
+              "Alex Example",
+              "Casey Example"
+            ],
+            "release_date": "2024-06-15T00:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=none&provider=FANZA&fallback=true",
+      "status": 404,
+      "text": "Not found"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=empty&provider=FANZA&fallback=true",
+      "json": {
+        "data": []
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=malformed&provider=FANZA&fallback=true",
+      "json": {
+        "data": null
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=unknown&provider=FANZA&fallback=true",
+      "json": {
+        "data": [
+          {
+            "id": "movie-1",
+            "number": "EXAMPLE-001",
+            "title": "A Bright Morning",
+            "provider": "unknown-source",
+            "homepage": "https://example.org/movies/movie-1",
+            "thumb_url": "https://example.org/images/poster-small.png",
+            "cover_url": "https://example.org/images/cover-small.png",
+            "score": 4.5,
+            "actors": [
+              "Alex Example",
+              "Casey Example"
+            ],
+            "release_date": "2024-06-15T00:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=match&provider=FANZA&fallback=false",
+      "json": {
+        "data": [
+          {
+            "id": "movie-1",
+            "number": "EXAMPLE-001",
+            "title": "A Bright Morning",
+            "provider": "FANZA",
+            "homepage": "https://example.org/movies/movie-1",
+            "thumb_url": "https://example.org/images/poster-small.png",
+            "cover_url": "https://example.org/images/cover-small.png",
+            "score": 4.5,
+            "actors": [
+              "Alex Example",
+              "Casey Example"
+            ],
+            "release_date": "2024-06-15T00:00:00Z"
+          },
+          {
+            "id": "movie-1",
+            "number": "EXAMPLE-001",
+            "title": "A Bright Morning",
+            "provider": "FANZA",
+            "homepage": "https://example.org/movies/movie-1",
+            "thumb_url": "https://example.org/images/poster-small.png",
+            "cover_url": "https://example.org/images/cover-small.png",
+            "score": 4.5,
+            "actors": [
+              "Alex Example",
+              "Casey Example"
+            ],
+            "release_date": "2024-06-15T00:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=match&fallback=false",
+      "json": {
+        "data": [
+          {
+            "id": "movie-1",
+            "number": "EXAMPLE-001",
+            "title": "A Bright Morning",
+            "provider": "FANZA",
+            "homepage": "https://example.org/movies/movie-1",
+            "thumb_url": "https://example.org/images/poster-small.png",
+            "cover_url": "https://example.org/images/cover-small.png",
+            "score": 4.5,
+            "actors": [
+              "Alex Example",
+              "Casey Example"
+            ],
+            "release_date": "2024-06-15T00:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=none&provider=FANZA&fallback=false",
+      "status": 404,
+      "text": "Not found"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=empty&provider=FANZA&fallback=false",
+      "json": {
+        "data": []
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=malformed&provider=FANZA&fallback=false",
+      "json": {
+        "data": null
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=unknown&provider=FANZA&fallback=false",
+      "json": {
+        "data": [
+          {
+            "id": "movie-1",
+            "number": "EXAMPLE-001",
+            "title": "A Bright Morning",
+            "provider": "unknown-source",
+            "homepage": "https://example.org/movies/movie-1",
+            "thumb_url": "https://example.org/images/poster-small.png",
+            "cover_url": "https://example.org/images/cover-small.png",
+            "score": 4.5,
+            "actors": [
+              "Alex Example",
+              "Casey Example"
+            ],
+            "release_date": "2024-06-15T00:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/movie-1?lazy=true",
+      "json": {
+        "data": {
+          "id": "movie-1",
+          "provider": "FANZA",
+          "number": "EXAMPLE-001",
+          "title": "A Bright Morning",
+          "summary": "A small team restores a quiet village garden. Their shared work brings the community together.",
+          "homepage": "https://example.org/movies/movie-1",
+          "director": "Morgan Example",
+          "actors": [
+            "Alex Example",
+            "Casey Example"
+          ],
+          "thumb_url": "https://example.org/images/poster-small.png",
+          "big_thumb_url": "https://example.org/images/poster-large.png",
+          "cover_url": "https://example.org/images/cover-small.png",
+          "big_cover_url": "https://example.org/images/cover-large.png",
+          "preview_video_url": "https://example.org/videos/garden-preview.mp4",
+          "preview_video_hls_url": "https://example.org/videos/garden-preview.m3u8",
+          "preview_images": [
+            "https://example.org/images/garden-01.png",
+            "https://example.org/images/garden-02.png",
+            "https://example.org/images/garden-03.png"
+          ],
+          "maker": "Green Valley Studio",
+          "label": "Open Horizon Pictures",
+          "series": "Garden Stories",
+          "genres": [
+            "Documentary",
+            "Nature"
+          ],
+          "score": 4.5,
+          "runtime": 95,
+          "release_date": "2024-06-15T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/minimal?lazy=true",
+      "json": {
+        "data": {
+          "id": "minimal",
+          "provider": "FANZA",
+          "title": "A Neutral Example",
+          "summary": null,
+          "score": null,
+          "actors": null,
+          "genres": null,
+          "aliases": null,
+          "images": null,
+          "preview_images": null,
+          "height": 0,
+          "birthday": "0001-01-01T00:00:00Z",
+          "release_date": "0001-01-01T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/error401?lazy=true",
+      "status": 401,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/error403?lazy=true",
+      "status": 403,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/error404?lazy=true",
+      "status": 404,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/error429?lazy=true",
+      "status": 429,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/error500?lazy=true",
+      "status": 500,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/invalid-json?lazy=true",
+      "text": "<html>synthetic</html>"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/network?lazy=true",
+      "networkError": true
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/malformed?lazy=true",
+      "json": {
+        "results": []
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/wrong-id?lazy=true",
+      "json": {
+        "data": {
+          "id": "movie-1",
+          "provider": "FANZA",
+          "number": "EXAMPLE-001",
+          "title": "A Bright Morning",
+          "summary": "A small team restores a quiet village garden. Their shared work brings the community together.",
+          "homepage": "https://example.org/movies/movie-1",
+          "director": "Morgan Example",
+          "actors": [
+            "Alex Example",
+            "Casey Example"
+          ],
+          "thumb_url": "https://example.org/images/poster-small.png",
+          "big_thumb_url": "https://example.org/images/poster-large.png",
+          "cover_url": "https://example.org/images/cover-small.png",
+          "big_cover_url": "https://example.org/images/cover-large.png",
+          "preview_video_url": "https://example.org/videos/garden-preview.mp4",
+          "preview_video_hls_url": "https://example.org/videos/garden-preview.m3u8",
+          "preview_images": [
+            "https://example.org/images/garden-01.png",
+            "https://example.org/images/garden-02.png",
+            "https://example.org/images/garden-03.png"
+          ],
+          "maker": "Green Valley Studio",
+          "label": "Open Horizon Pictures",
+          "series": "Garden Stories",
+          "genres": [
+            "Documentary",
+            "Nature"
+          ],
+          "score": 4.5,
+          "runtime": 95,
+          "release_date": "2024-06-15T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/wrong-provider?lazy=true",
+      "json": {
+        "data": {
+          "id": "wrong-provider",
+          "provider": "JavBus",
+          "number": "EXAMPLE-001",
+          "title": "A Bright Morning",
+          "summary": "A small team restores a quiet village garden. Their shared work brings the community together.",
+          "homepage": "https://example.org/movies/movie-1",
+          "director": "Morgan Example",
+          "actors": [
+            "Alex Example",
+            "Casey Example"
+          ],
+          "thumb_url": "https://example.org/images/poster-small.png",
+          "big_thumb_url": "https://example.org/images/poster-large.png",
+          "cover_url": "https://example.org/images/cover-small.png",
+          "big_cover_url": "https://example.org/images/cover-large.png",
+          "preview_video_url": "https://example.org/videos/garden-preview.mp4",
+          "preview_video_hls_url": "https://example.org/videos/garden-preview.m3u8",
+          "preview_images": [
+            "https://example.org/images/garden-01.png",
+            "https://example.org/images/garden-02.png",
+            "https://example.org/images/garden-03.png"
+          ],
+          "maker": "Green Valley Studio",
+          "label": "Open Horizon Pictures",
+          "series": "Garden Stories",
+          "genres": [
+            "Documentary",
+            "Nature"
+          ],
+          "score": 4.5,
+          "runtime": 95,
+          "release_date": "2024-06-15T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/movie-1?lazy=false",
+      "json": {
+        "data": {
+          "id": "movie-1",
+          "provider": "FANZA",
+          "number": "EXAMPLE-001",
+          "title": "A Bright Morning",
+          "summary": "A small team restores a quiet village garden. Their shared work brings the community together.",
+          "homepage": "https://example.org/movies/movie-1",
+          "director": "Morgan Example",
+          "actors": [
+            "Alex Example",
+            "Casey Example"
+          ],
+          "thumb_url": "https://example.org/images/poster-small.png",
+          "big_thumb_url": "https://example.org/images/poster-large.png",
+          "cover_url": "https://example.org/images/cover-small.png",
+          "big_cover_url": "https://example.org/images/cover-large.png",
+          "preview_video_url": "https://example.org/videos/garden-preview.mp4",
+          "preview_video_hls_url": "https://example.org/videos/garden-preview.m3u8",
+          "preview_images": [
+            "https://example.org/images/garden-01.png",
+            "https://example.org/images/garden-02.png",
+            "https://example.org/images/garden-03.png"
+          ],
+          "maker": "Green Valley Studio",
+          "label": "Open Horizon Pictures",
+          "series": "Garden Stories",
+          "genres": [
+            "Documentary",
+            "Nature"
+          ],
+          "score": 4.5,
+          "runtime": 95,
+          "release_date": "2024-06-15T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/minimal?lazy=false",
+      "json": {
+        "data": {
+          "id": "minimal",
+          "provider": "FANZA",
+          "title": "A Neutral Example",
+          "summary": null,
+          "score": null,
+          "actors": null,
+          "genres": null,
+          "aliases": null,
+          "images": null,
+          "preview_images": null,
+          "height": 0,
+          "birthday": "0001-01-01T00:00:00Z",
+          "release_date": "0001-01-01T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/error401?lazy=false",
+      "status": 401,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/error403?lazy=false",
+      "status": 403,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/error404?lazy=false",
+      "status": 404,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/error429?lazy=false",
+      "status": 429,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/error500?lazy=false",
+      "status": 500,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/invalid-json?lazy=false",
+      "text": "<html>synthetic</html>"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/network?lazy=false",
+      "networkError": true
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/malformed?lazy=false",
+      "json": {
+        "results": []
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/wrong-id?lazy=false",
+      "json": {
+        "data": {
+          "id": "movie-1",
+          "provider": "FANZA",
+          "number": "EXAMPLE-001",
+          "title": "A Bright Morning",
+          "summary": "A small team restores a quiet village garden. Their shared work brings the community together.",
+          "homepage": "https://example.org/movies/movie-1",
+          "director": "Morgan Example",
+          "actors": [
+            "Alex Example",
+            "Casey Example"
+          ],
+          "thumb_url": "https://example.org/images/poster-small.png",
+          "big_thumb_url": "https://example.org/images/poster-large.png",
+          "cover_url": "https://example.org/images/cover-small.png",
+          "big_cover_url": "https://example.org/images/cover-large.png",
+          "preview_video_url": "https://example.org/videos/garden-preview.mp4",
+          "preview_video_hls_url": "https://example.org/videos/garden-preview.m3u8",
+          "preview_images": [
+            "https://example.org/images/garden-01.png",
+            "https://example.org/images/garden-02.png",
+            "https://example.org/images/garden-03.png"
+          ],
+          "maker": "Green Valley Studio",
+          "label": "Open Horizon Pictures",
+          "series": "Garden Stories",
+          "genres": [
+            "Documentary",
+            "Nature"
+          ],
+          "score": 4.5,
+          "runtime": 95,
+          "release_date": "2024-06-15T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/FANZA/wrong-provider?lazy=false",
+      "json": {
+        "data": {
+          "id": "wrong-provider",
+          "provider": "JavBus",
+          "number": "EXAMPLE-001",
+          "title": "A Bright Morning",
+          "summary": "A small team restores a quiet village garden. Their shared work brings the community together.",
+          "homepage": "https://example.org/movies/movie-1",
+          "director": "Morgan Example",
+          "actors": [
+            "Alex Example",
+            "Casey Example"
+          ],
+          "thumb_url": "https://example.org/images/poster-small.png",
+          "big_thumb_url": "https://example.org/images/poster-large.png",
+          "cover_url": "https://example.org/images/cover-small.png",
+          "big_cover_url": "https://example.org/images/cover-large.png",
+          "preview_video_url": "https://example.org/videos/garden-preview.mp4",
+          "preview_video_hls_url": "https://example.org/videos/garden-preview.m3u8",
+          "preview_images": [
+            "https://example.org/images/garden-01.png",
+            "https://example.org/images/garden-02.png",
+            "https://example.org/images/garden-03.png"
+          ],
+          "maker": "Green Valley Studio",
+          "label": "Open Horizon Pictures",
+          "series": "Garden Stories",
+          "genres": [
+            "Documentary",
+            "Nature"
+          ],
+          "score": 4.5,
+          "runtime": 95,
+          "release_date": "2024-06-15T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/search?q=match&provider=Gfriends&fallback=true",
+      "json": {
+        "data": [
+          {
+            "id": "actor-1",
+            "name": "Alex Example",
+            "provider": "Gfriends",
+            "homepage": "https://example.org/people/actor-1",
+            "aliases": [
+              "River Example",
+              "Friendly Guide"
+            ],
+            "images": [
+              "https://example.org/images/actor-01.png",
+              "https://example.org/images/actor-02.png"
+            ]
+          },
+          {
+            "id": "actor-1",
+            "name": "Alex Example",
+            "provider": "Gfriends",
+            "homepage": "https://example.org/people/actor-1",
+            "aliases": [
+              "River Example",
+              "Friendly Guide"
+            ],
+            "images": [
+              "https://example.org/images/actor-01.png",
+              "https://example.org/images/actor-02.png"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/search?q=match&fallback=true",
+      "json": {
+        "data": [
+          {
+            "id": "actor-1",
+            "name": "Alex Example",
+            "provider": "Gfriends",
+            "homepage": "https://example.org/people/actor-1",
+            "aliases": [
+              "River Example",
+              "Friendly Guide"
+            ],
+            "images": [
+              "https://example.org/images/actor-01.png",
+              "https://example.org/images/actor-02.png"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/search?q=none&provider=Gfriends&fallback=true",
+      "status": 404,
+      "text": "Not found"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/search?q=empty&provider=Gfriends&fallback=true",
+      "json": {
+        "data": []
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/search?q=malformed&provider=Gfriends&fallback=true",
+      "json": {
+        "data": null
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/search?q=unknown&provider=Gfriends&fallback=true",
+      "json": {
+        "data": [
+          {
+            "id": "actor-1",
+            "name": "Alex Example",
+            "provider": "unknown-source",
+            "homepage": "https://example.org/people/actor-1",
+            "aliases": [
+              "River Example",
+              "Friendly Guide"
+            ],
+            "images": [
+              "https://example.org/images/actor-01.png",
+              "https://example.org/images/actor-02.png"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/search?q=match&provider=Gfriends&fallback=false",
+      "json": {
+        "data": [
+          {
+            "id": "actor-1",
+            "name": "Alex Example",
+            "provider": "Gfriends",
+            "homepage": "https://example.org/people/actor-1",
+            "aliases": [
+              "River Example",
+              "Friendly Guide"
+            ],
+            "images": [
+              "https://example.org/images/actor-01.png",
+              "https://example.org/images/actor-02.png"
+            ]
+          },
+          {
+            "id": "actor-1",
+            "name": "Alex Example",
+            "provider": "Gfriends",
+            "homepage": "https://example.org/people/actor-1",
+            "aliases": [
+              "River Example",
+              "Friendly Guide"
+            ],
+            "images": [
+              "https://example.org/images/actor-01.png",
+              "https://example.org/images/actor-02.png"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/search?q=match&fallback=false",
+      "json": {
+        "data": [
+          {
+            "id": "actor-1",
+            "name": "Alex Example",
+            "provider": "Gfriends",
+            "homepage": "https://example.org/people/actor-1",
+            "aliases": [
+              "River Example",
+              "Friendly Guide"
+            ],
+            "images": [
+              "https://example.org/images/actor-01.png",
+              "https://example.org/images/actor-02.png"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/search?q=none&provider=Gfriends&fallback=false",
+      "status": 404,
+      "text": "Not found"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/search?q=empty&provider=Gfriends&fallback=false",
+      "json": {
+        "data": []
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/search?q=malformed&provider=Gfriends&fallback=false",
+      "json": {
+        "data": null
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/search?q=unknown&provider=Gfriends&fallback=false",
+      "json": {
+        "data": [
+          {
+            "id": "actor-1",
+            "name": "Alex Example",
+            "provider": "unknown-source",
+            "homepage": "https://example.org/people/actor-1",
+            "aliases": [
+              "River Example",
+              "Friendly Guide"
+            ],
+            "images": [
+              "https://example.org/images/actor-01.png",
+              "https://example.org/images/actor-02.png"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/actor-1?lazy=true",
+      "json": {
+        "data": {
+          "id": "actor-1",
+          "provider": "Gfriends",
+          "name": "Alex Example",
+          "homepage": "https://example.org/people/actor-1",
+          "summary": "An imaginary performer who enjoys telling stories about nature and community life.",
+          "hobby": "Reading books and planting flowers",
+          "skill": "Landscape photography",
+          "blood_type": "O",
+          "cup_size": "A",
+          "measurements": "90-60-90",
+          "nationality": "Canada",
+          "height": 170,
+          "aliases": [
+            "River Example",
+            "Friendly Guide"
+          ],
+          "images": [
+            "https://example.org/images/actor-01.png",
+            "https://example.org/images/actor-02.png"
+          ],
+          "birthday": "1992-04-16T00:00:00Z",
+          "debut_date": "2014-08-20T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/minimal?lazy=true",
+      "json": {
+        "data": {
+          "id": "minimal",
+          "provider": "Gfriends",
+          "name": "A Neutral Example",
+          "summary": null,
+          "score": null,
+          "actors": null,
+          "genres": null,
+          "aliases": null,
+          "images": null,
+          "preview_images": null,
+          "height": 0,
+          "birthday": "0001-01-01T00:00:00Z",
+          "release_date": "0001-01-01T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/error401?lazy=true",
+      "status": 401,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/error403?lazy=true",
+      "status": 403,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/error404?lazy=true",
+      "status": 404,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/error429?lazy=true",
+      "status": 429,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/error500?lazy=true",
+      "status": 500,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/invalid-json?lazy=true",
+      "text": "<html>synthetic</html>"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/network?lazy=true",
+      "networkError": true
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/malformed?lazy=true",
+      "json": {
+        "results": []
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/wrong-id?lazy=true",
+      "json": {
+        "data": {
+          "id": "actor-1",
+          "provider": "Gfriends",
+          "name": "Alex Example",
+          "homepage": "https://example.org/people/actor-1",
+          "summary": "An imaginary performer who enjoys telling stories about nature and community life.",
+          "hobby": "Reading books and planting flowers",
+          "skill": "Landscape photography",
+          "blood_type": "O",
+          "cup_size": "A",
+          "measurements": "90-60-90",
+          "nationality": "Canada",
+          "height": 170,
+          "aliases": [
+            "River Example",
+            "Friendly Guide"
+          ],
+          "images": [
+            "https://example.org/images/actor-01.png",
+            "https://example.org/images/actor-02.png"
+          ],
+          "birthday": "1992-04-16T00:00:00Z",
+          "debut_date": "2014-08-20T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/wrong-provider?lazy=true",
+      "json": {
+        "data": {
+          "id": "wrong-provider",
+          "provider": "unknown-source",
+          "name": "Alex Example",
+          "homepage": "https://example.org/people/actor-1",
+          "summary": "An imaginary performer who enjoys telling stories about nature and community life.",
+          "hobby": "Reading books and planting flowers",
+          "skill": "Landscape photography",
+          "blood_type": "O",
+          "cup_size": "A",
+          "measurements": "90-60-90",
+          "nationality": "Canada",
+          "height": 170,
+          "aliases": [
+            "River Example",
+            "Friendly Guide"
+          ],
+          "images": [
+            "https://example.org/images/actor-01.png",
+            "https://example.org/images/actor-02.png"
+          ],
+          "birthday": "1992-04-16T00:00:00Z",
+          "debut_date": "2014-08-20T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/actor-1?lazy=false",
+      "json": {
+        "data": {
+          "id": "actor-1",
+          "provider": "Gfriends",
+          "name": "Alex Example",
+          "homepage": "https://example.org/people/actor-1",
+          "summary": "An imaginary performer who enjoys telling stories about nature and community life.",
+          "hobby": "Reading books and planting flowers",
+          "skill": "Landscape photography",
+          "blood_type": "O",
+          "cup_size": "A",
+          "measurements": "90-60-90",
+          "nationality": "Canada",
+          "height": 170,
+          "aliases": [
+            "River Example",
+            "Friendly Guide"
+          ],
+          "images": [
+            "https://example.org/images/actor-01.png",
+            "https://example.org/images/actor-02.png"
+          ],
+          "birthday": "1992-04-16T00:00:00Z",
+          "debut_date": "2014-08-20T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/minimal?lazy=false",
+      "json": {
+        "data": {
+          "id": "minimal",
+          "provider": "Gfriends",
+          "name": "A Neutral Example",
+          "summary": null,
+          "score": null,
+          "actors": null,
+          "genres": null,
+          "aliases": null,
+          "images": null,
+          "preview_images": null,
+          "height": 0,
+          "birthday": "0001-01-01T00:00:00Z",
+          "release_date": "0001-01-01T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/error401?lazy=false",
+      "status": 401,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/error403?lazy=false",
+      "status": 403,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/error404?lazy=false",
+      "status": 404,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/error429?lazy=false",
+      "status": 429,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/error500?lazy=false",
+      "status": 500,
+      "text": "Synthetic error"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/invalid-json?lazy=false",
+      "text": "<html>synthetic</html>"
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/network?lazy=false",
+      "networkError": true
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/malformed?lazy=false",
+      "json": {
+        "results": []
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/wrong-id?lazy=false",
+      "json": {
+        "data": {
+          "id": "actor-1",
+          "provider": "Gfriends",
+          "name": "Alex Example",
+          "homepage": "https://example.org/people/actor-1",
+          "summary": "An imaginary performer who enjoys telling stories about nature and community life.",
+          "hobby": "Reading books and planting flowers",
+          "skill": "Landscape photography",
+          "blood_type": "O",
+          "cup_size": "A",
+          "measurements": "90-60-90",
+          "nationality": "Canada",
+          "height": 170,
+          "aliases": [
+            "River Example",
+            "Friendly Guide"
+          ],
+          "images": [
+            "https://example.org/images/actor-01.png",
+            "https://example.org/images/actor-02.png"
+          ],
+          "birthday": "1992-04-16T00:00:00Z",
+          "debut_date": "2014-08-20T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/actors/Gfriends/wrong-provider?lazy=false",
+      "json": {
+        "data": {
+          "id": "wrong-provider",
+          "provider": "unknown-source",
+          "name": "Alex Example",
+          "homepage": "https://example.org/people/actor-1",
+          "summary": "An imaginary performer who enjoys telling stories about nature and community life.",
+          "hobby": "Reading books and planting flowers",
+          "skill": "Landscape photography",
+          "blood_type": "O",
+          "cup_size": "A",
+          "measurements": "90-60-90",
+          "nationality": "Canada",
+          "height": 170,
+          "aliases": [
+            "River Example",
+            "Friendly Guide"
+          ],
+          "images": [
+            "https://example.org/images/actor-01.png",
+            "https://example.org/images/actor-02.png"
+          ],
+          "birthday": "1992-04-16T00:00:00Z",
+          "debut_date": "2014-08-20T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=match&provider=JavBus&fallback=true",
+      "json": {
+        "data": [
+          {
+            "id": "movie-1",
+            "number": "EXAMPLE-001",
+            "title": "A Bright Morning",
+            "provider": "JavBus",
+            "homepage": "https://example.org/movies/movie-1",
+            "thumb_url": "https://example.org/images/poster-small.png",
+            "cover_url": "https://example.org/images/cover-small.png",
+            "score": 4.5,
+            "actors": [
+              "Alex Example",
+              "Casey Example"
+            ],
+            "release_date": "2024-06-15T00:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/search?q=match&provider=JavBus&fallback=false",
+      "json": {
+        "data": [
+          {
+            "id": "movie-1",
+            "number": "EXAMPLE-001",
+            "title": "A Bright Morning",
+            "provider": "JavBus",
+            "homepage": "https://example.org/movies/movie-1",
+            "thumb_url": "https://example.org/images/poster-small.png",
+            "cover_url": "https://example.org/images/cover-small.png",
+            "score": 4.5,
+            "actors": [
+              "Alex Example",
+              "Casey Example"
+            ],
+            "release_date": "2024-06-15T00:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/JavBus/movie-1?lazy=true",
+      "json": {
+        "data": {
+          "id": "movie-1",
+          "provider": "JavBus",
+          "number": "EXAMPLE-001",
+          "title": "A Bright Morning",
+          "summary": "A small team restores a quiet village garden. Their shared work brings the community together.",
+          "homepage": "https://example.org/movies/movie-1",
+          "director": "Morgan Example",
+          "actors": [
+            "Alex Example",
+            "Casey Example"
+          ],
+          "thumb_url": "https://example.org/images/poster-small.png",
+          "big_thumb_url": "https://example.org/images/poster-large.png",
+          "cover_url": "https://example.org/images/cover-small.png",
+          "big_cover_url": "https://example.org/images/cover-large.png",
+          "preview_video_url": "https://example.org/videos/garden-preview.mp4",
+          "preview_video_hls_url": "https://example.org/videos/garden-preview.m3u8",
+          "preview_images": [
+            "https://example.org/images/garden-01.png",
+            "https://example.org/images/garden-02.png",
+            "https://example.org/images/garden-03.png"
+          ],
+          "maker": "Green Valley Studio",
+          "label": "Open Horizon Pictures",
+          "series": "Garden Stories",
+          "genres": [
+            "Documentary",
+            "Nature"
+          ],
+          "score": 4.5,
+          "runtime": 95,
+          "release_date": "2024-06-15T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/reviews/FANZA/movie-1?lazy=true",
+      "json": {
+        "data": [
+          {
+            "title": "A thoughtful story",
+            "author": "Jamie Example",
+            "comment": "The calm setting and kind characters make this story enjoyable.",
+            "score": 4.5,
+            "date": "2024-07-01T00:00:00Z"
+          },
+          {
+            "title": "A warm community",
+            "author": "Robin Example",
+            "comment": "The garden scenes show how small efforts can help a community grow.",
+            "score": 4,
+            "date": "2024-07-02T00:00:00Z"
+          },
+          {
+            "title": "A clear message",
+            "author": "Taylor Example",
+            "comment": "The simple story offers an encouraging view of teamwork.",
+            "score": 5,
+            "date": "2024-07-03T00:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/movies/JavBus/movie-1?lazy=false",
+      "json": {
+        "data": {
+          "id": "movie-1",
+          "provider": "JavBus",
+          "number": "EXAMPLE-001",
+          "title": "A Bright Morning",
+          "summary": "A small team restores a quiet village garden. Their shared work brings the community together.",
+          "homepage": "https://example.org/movies/movie-1",
+          "director": "Morgan Example",
+          "actors": [
+            "Alex Example",
+            "Casey Example"
+          ],
+          "thumb_url": "https://example.org/images/poster-small.png",
+          "big_thumb_url": "https://example.org/images/poster-large.png",
+          "cover_url": "https://example.org/images/cover-small.png",
+          "big_cover_url": "https://example.org/images/cover-large.png",
+          "preview_video_url": "https://example.org/videos/garden-preview.mp4",
+          "preview_video_hls_url": "https://example.org/videos/garden-preview.m3u8",
+          "preview_images": [
+            "https://example.org/images/garden-01.png",
+            "https://example.org/images/garden-02.png",
+            "https://example.org/images/garden-03.png"
+          ],
+          "maker": "Green Valley Studio",
+          "label": "Open Horizon Pictures",
+          "series": "Garden Stories",
+          "genres": [
+            "Documentary",
+            "Nature"
+          ],
+          "score": 4.5,
+          "runtime": 95,
+          "release_date": "2024-06-15T00:00:00Z"
+        }
+      }
+    },
+    {
+      "url": "https://metatube.example.invalid/v1/reviews/FANZA/movie-1?lazy=false",
+      "json": {
+        "data": [
+          {
+            "title": "A thoughtful story",
+            "author": "Jamie Example",
+            "comment": "The calm setting and kind characters make this story enjoyable.",
+            "score": 4.5,
+            "date": "2024-07-01T00:00:00Z"
+          },
+          {
+            "title": "A warm community",
+            "author": "Robin Example",
+            "comment": "The garden scenes show how small efforts can help a community grow.",
+            "score": 4,
+            "date": "2024-07-02T00:00:00Z"
+          },
+          {
+            "title": "A clear message",
+            "author": "Taylor Example",
+            "comment": "The simple story offers an encouraging view of teamwork.",
+            "score": 5,
+            "date": "2024-07-03T00:00:00Z"
+          }
+        ]
+      }
+    }
+  ]
+}
